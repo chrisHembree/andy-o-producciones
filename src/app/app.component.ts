@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog,  } from '@angular/material/dialog';
+import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent {
     this.dialog.open(LoginDialogComponent, {
       width: '400px', // adjust the width as needed
     });
-  }
 
+
+  }
 
 }

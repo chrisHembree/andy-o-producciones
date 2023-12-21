@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UploadService } from '../upload.service';
 
 @Component({
   selector: 'app-homepage',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './homepage.component.css'
 })
 export class HomepageComponent {
+
+  constructor(private UploadService: UploadService) {}
+
+  openUploadDialog(): void {
+    this.UploadService.openUploadDialog();
+  }
 
 }

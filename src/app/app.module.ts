@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 
 
 
@@ -23,6 +24,7 @@ import { FormsModule } from '@angular/forms';
     ContactoComponent,
     RetratosComponent,
     LoginDialogComponent,
+    UploadDialogComponent,
 
   ],
   imports: [

@@ -1,0 +1,22 @@
+<!-- upload-dialog.component.html -->
+<h2 mat-dialog-title>Upload Video</h2>
+<div mat-dialog-content>
+  <!-- Video URL Input -->
+  <mat-form-field>
+    <mat-label>Video URL</mat-label>
+    <input matInput placeholder="Enter video URL" [(ngModel)]="videoUrl">
+  </mat-form-field>
+
+  <!-- Caption Input -->
+  <mat-form-field>
+    <mat-label>Caption</mat-label>
+    <input matInput placeholder="Enter caption" [(ngModel)]="caption">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <!-- Cancel Button -->
+  <button mat-button (click)="onNoClick()">Cancel</button>
+
+  <!-- Submit Button (You can customize the behavior in the component) -->
+  <button mat-button (click)="onSubmit()">Submit</button>
+</div>
