@@ -1,0 +1,22 @@
+<!-- upload-dialog.component.html -->
+<h2 mat-dialog-title>Upload Photo</h2>
+<div mat-dialog-content>
+  <!-- File Input for Photo -->
+  <mat-form-field>
+    <mat-label>Choose a Photo</mat-label>
+    <input type="file" (change)="handleFileInput($event)" />
+  </mat-form-field>
+
+  <!-- Caption Input -->
+  <mat-form-field>
+    <mat-label>Caption</mat-label>
+    <input matInput placeholder="Enter caption" [(ngModel)]="caption">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <!-- Cancel Button -->
+  <button mat-button (click)="onNoClick()">Cancel</button>
+
+  <!-- Submit Button (You can customize the behavior in the component) -->
+  <button mat-button (click)="onSubmit()">Submit</button>
+</div>
