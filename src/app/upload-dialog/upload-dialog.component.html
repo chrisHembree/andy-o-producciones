@@ -1,10 +1,10 @@
 <!-- upload-dialog.component.html -->
-<h2 mat-dialog-title>Upload Video</h2>
+<h2 mat-dialog-title>Upload Photo</h2>
 <div mat-dialog-content>
-  <!-- Video URL Input -->
+  <!-- File Input for Photo -->
   <mat-form-field>
-    <mat-label>Video URL</mat-label>
-    <input matInput placeholder="Enter video URL" [(ngModel)]="videoUrl">
+    <mat-label>Choose a Photo</mat-label>
+    <input type="file" (change)="handleFileInput($event)" />
   </mat-form-field>
 
   <!-- Caption Input -->

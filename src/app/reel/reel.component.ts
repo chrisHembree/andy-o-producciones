@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UploadService } from '../upload.service';
 
 @Component({
   selector: 'app-reel',

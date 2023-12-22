@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
+import { NgxFileDropModule } from 'ngx-file-drop';
 
 
 
@@ -35,6 +36,7 @@ import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    NgxFileDropModule,
 
   ],
   providers: [],
