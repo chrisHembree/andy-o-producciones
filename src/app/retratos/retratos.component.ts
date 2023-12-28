@@ -10,8 +10,6 @@ export class RetratosComponent {
 
   constructor(private UploadService: UploadService) {}
 
-  openUploadDialog(): void {
-    this.UploadService.openUploadDialog();
-  }
+
 
 }
