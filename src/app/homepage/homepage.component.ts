@@ -1,35 +1,47 @@
 import { Component } from '@angular/core';
 import { UploadService } from '../upload.service';
-import { Entry } from '../entry.model';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.css'
+  styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent {
+  imageUrl: string | ArrayBuffer = ''; // Variable to store the image URL
 
-  constructor(private UploadService: UploadService) {}
-
-  entry: Entry = new Entry(null /* provide a File */, 'Optional Caption');
+  constructor(private uploadService: UploadService) {}
 
   onFileChange(event: any) {
     const fileList: FileList = event.target.files;
 
     if (fileList.length > 0) {
-      this.entry.image = fileList[0];
+      const file: File = fileList[0];
+
+      // Display the selected image on the screen
+      this.previewImage(file);
+
+      // Upload the file using the UploadService
+      this.uploadService.uploadFile(file).subscribe(
+        (response) => {
+          // Assuming your service returns the URL of the uploaded image
+          this.imageUrl = response.imageUrl;
+          console.log('File uploaded successfully. Image URL:', this.imageUrl);
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+        }
+      );
     }
   }
 
-  submitForm() {
-    // Handle form submission here, you can send the entry to a service or perform other actions.
-    console.log('Submitted Entry:', this.entry);
+  // Function to display the selected image on the screen
+  private previewImage(file: File) {
+    const reader = new FileReader();
 
+    reader.onload = (e: any) => {
+      this.imageUrl = e.target.result;
+    };
 
-    this.entry = new Entry(null, '');
+    reader.readAsDataURL(file);
   }
-
-
-
 }

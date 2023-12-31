@@ -1,15 +1,15 @@
 
-
-
 <div class="CINEMATOGRAFÍA">
   <h2>Upload Picture</h2>
 
-  <form (ngSubmit)="submitForm()" #entryForm="ngForm">
-    <input type="file" (change)="onFileChange($event)" name="image" required />
-    <input type="text" [(ngModel)]="entry.caption" name="caption" placeholder="Optional Caption" />
-
-    <button type="submit" [disabled]="!entryForm.form.valid">Upload</button>
+  <form>
+    <input type="file" (change)="onFileChange($event)" required />
   </form>
+
+  <!-- Display the selected image -->
+  <div *ngIf="imageUrl">
+    <img [src]="imageUrl" alt="Uploaded Image">
+  </div>
 </div>
 
 

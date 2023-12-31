@@ -12,8 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-import { NgxFileDropModule } from 'ngx-file-drop';
 
 
 
@@ -36,7 +36,8 @@ import { NgxFileDropModule } from 'ngx-file-drop';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    NgxFileDropModule,
+    HttpClientModule,
+
 
   ],
   providers: [],
