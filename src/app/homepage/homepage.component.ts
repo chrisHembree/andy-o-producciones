@@ -7,7 +7,7 @@ import { UploadService } from '../upload.service';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent {
-  imageUrl: string | ArrayBuffer = ''; // Variable to store the image URL
+  imageUrl: string | ArrayBuffer = '';
 
   constructor(private uploadService: UploadService) {}
 
@@ -17,13 +17,13 @@ export class HomepageComponent {
     if (fileList.length > 0) {
       const file: File = fileList[0];
 
-      // Display the selected image on the screen
+
       this.previewImage(file);
 
-      // Upload the file using the UploadService
+
       this.uploadService.uploadFile(file).subscribe(
         (response) => {
-          // Assuming your service returns the URL of the uploaded image
+
           this.imageUrl = response.imageUrl;
           console.log('File uploaded successfully. Image URL:', this.imageUrl);
         },
@@ -34,7 +34,7 @@ export class HomepageComponent {
     }
   }
 
-  // Function to display the selected image on the screen
+
   private previewImage(file: File) {
     const reader = new FileReader();
 

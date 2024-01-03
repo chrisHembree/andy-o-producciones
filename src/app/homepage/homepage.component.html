@@ -1,12 +1,11 @@
 
 <div class="CINEMATOGRAFÍA">
-  <h2>Upload Picture</h2>
+
 
   <form>
     <input type="file" (change)="onFileChange($event)" required />
   </form>
 
-  <!-- Display the selected image -->
   <div *ngIf="imageUrl"  >
     <img [src]="imageUrl" alt="Uploaded Image" class="entry">
   </div>
