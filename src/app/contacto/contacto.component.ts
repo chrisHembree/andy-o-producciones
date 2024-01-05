@@ -10,7 +10,7 @@ export class ContactoComponent {
   editingMode = false;
   phoneNumber = '3152490008';
   email = 'ANDYOCINE@GMAIL.COM';
-  twitterHandle = '@ANDYOCINE';
+  instaHandle = '@ANDYOCINE';
 
   toggleEditing() {
     this.editingMode = !this.editingMode;

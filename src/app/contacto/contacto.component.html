@@ -4,14 +4,14 @@
     <button class="editcontact" (click)="toggleEditing()">Edit</button> <br>
     <span>{{ phoneNumber }}</span> <br>
     <span>{{ email }}</span> <br>
-    <span>{{ twitterHandle }}</span>
+    <span>{{ instaHandle }}</span>
   </div>
 
   <div class="contactinfo" *ngIf="editingMode">
     <button class="editcontact" (click)="saveChanges()">Save</button> <br>
     <input [(ngModel)]="phoneNumber" placeholder="Enter Phone Number"><br>
     <input [(ngModel)]="email" placeholder="Enter Email"><br>
-    <input [(ngModel)]="twitterHandle" placeholder="Enter Twitter Handle">
+    <input [(ngModel)]="instaHandle" placeholder="Enter Twitter Handle">
   </div>
 </div>
 <div>
