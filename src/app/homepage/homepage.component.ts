@@ -45,3 +45,6 @@ export class HomepageComponent {
     reader.readAsDataURL(file);
   }
 }
+
+
+
