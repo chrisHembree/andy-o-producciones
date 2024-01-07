@@ -1,2 +1,18 @@
-<button>Upload</button>
-<p>retratos works!</p>
+<div class="retratos">
+
+
+  <form>
+    <input type="file" (change)="onFileChange($event)" required />
+  </form>
+
+  <div *ngIf="imageUrl"  >
+    <img [src]="imageUrl" alt="Uploaded Image" class="entry">
+  </div>
+</div>
+
+
+
+
+
+
+
