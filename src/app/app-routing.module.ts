@@ -4,6 +4,7 @@ import { RetratosComponent } from './retratos/retratos.component';
 import { ReelComponent } from './reel/reel.component';
 import { ContactoComponent } from './contacto/contacto.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,7 @@ const routes: Routes = [
   { path: 'retratos', component: RetratosComponent },
   { path: 'reel', component: ReelComponent },
   { path: 'contacto', component: ContactoComponent },
-
+  { path: 'admin', component: AdminComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
 
