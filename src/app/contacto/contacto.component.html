@@ -2,9 +2,9 @@
   <img class="andy" src="/assets/andy.jpg" alt="Andy">
   <div class="contactinfo" *ngIf="!editingMode">
     <button class="editcontact" (click)="toggleEditing()">Edit</button> <br>
-    <span>{{ phoneNumber }}</span> <br>
-    <span>{{ email }}</span> <br>
-    <span>{{ instaHandle }}</span>
+   <img class="walogo" src="/assets/walogo.png"> <span>{{ phoneNumber }}</span> <br>
+   <img class="gmlogo" src="/assets/gmlogo.png"> <span>{{ email }}</span> <br>
+   <img class="iglogo" src="/assets/iglogo.jpg"> <span>{{ instaHandle }}</span>
   </div>
 
   <div class="contactinfo" *ngIf="editingMode">
