@@ -1,4 +1,11 @@
 .reel{
 
-  padding-left: 100px;
-}
+    padding-top: 150px;
+    padding-bottom: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+  }
+
