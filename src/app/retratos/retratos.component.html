@@ -1,13 +1,9 @@
 <div class="retratos">
 
+<img [src]="url" title="retratos" height="200px" width="200px">
+<input type="file" id="img" style="display:none" (change)="onSelect($event)">
+<label for="img">Upload Image</label>
 
-  <form>
-    <input type="file" (change)="onFileChange($event)" required />
-  </form>
-
-  <div *ngIf="imageUrl"  >
-    <img [src]="imageUrl" alt="Uploaded Image" class="entry">
-  </div>
 </div>
 
 

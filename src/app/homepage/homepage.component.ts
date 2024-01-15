@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UploadService } from '../upload.service';
+import { Entry } from '../entry.model';
 
 @Component({
   selector: 'app-homepage',
@@ -8,6 +9,8 @@ import { UploadService } from '../upload.service';
 })
 export class HomepageComponent {
   imageUrl: string | ArrayBuffer = '';
+
+  entryArray = [];
 
   constructor(private uploadService: UploadService) {}
 

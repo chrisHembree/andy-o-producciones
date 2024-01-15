@@ -8,42 +8,17 @@ import { UploadService } from '../upload.service';
 })
 export class RetratosComponent {
 
-  constructor(private UploadService: UploadService) {}
+  url="https://static.vecteezy.com/system/resources/previews/016/916/479/original/placeholder-icon-design-free-vector.jpg";
 
-  imageUrl: string | ArrayBuffer = '';
+  onSelect(event){
+    if(event.target.files[0])
+{
+   let reader = new FileReader();
+   reader.readAsDataURL(event.target.files[0]);
+   reader.onload = (event:any)=>{
+    this.url = event.target.result;
+   }
 
-    onFileChange(event: any) {
-      const fileList: FileList = event.target.files;
-
-      if (fileList.length > 0) {
-        const file: File = fileList[0];
-
-
-        this.previewImage(file);
-
-
-        this.UploadService.uploadFile(file).subscribe(
-          (response) => {
-
-            this.imageUrl = response.imageUrl;
-            console.log('File uploaded successfully. Image URL:', this.imageUrl);
-          },
-          (error) => {
-            console.error('Error uploading file:', error);
-          }
-        );
-      }
-    }
-
-
-    private previewImage(file: File) {
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.imageUrl = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
-    }
   }
-
+  }
+}

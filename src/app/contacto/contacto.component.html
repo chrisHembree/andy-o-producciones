@@ -3,14 +3,14 @@
   <div class="contactinfo" *ngIf="!editingMode">
     <button class="editcontact" (click)="toggleEditing()">Edit</button> <br>
     <div>
-   <img class="walogo" src="/assets/walogo.jpg" style="padding-right: 8px;"> <span>{{ phoneNumber }}</span> <br>
+   <img class="walogo" src="/assets/walogo.jpg" style="padding-right: 8px;"> <span style="font-size: 20px;">{{ phoneNumber }}</span> <br>
   </div>
   <br>
   <div>
-   <img class="gmlogo" src="/assets/gmlogo.jpg" style="padding-right: 8px;" > <span>{{ email }}</span> <br>
+   <img class="gmlogo" src="/assets/gmlogo.jpg" style="padding-right: 8px;" > <span style="font-size: 20px;">{{ email }}</span> <br>
   </div>
   <br>
-   <div> <img class="iglogo" src="/assets/iglogo.jpg" style="padding-right: 8px;" > <span>{{ instaHandle }}</span> </div>
+   <div> <img class="iglogo" src="/assets/iglogo.jpg" style="padding-right: 8px;" > <span style="font-size: 20px;">{{ instaHandle }}</span> </div>
   </div>
 
   <div class="contactinfo" *ngIf="editingMode">
