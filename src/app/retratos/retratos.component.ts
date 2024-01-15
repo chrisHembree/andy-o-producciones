@@ -26,4 +26,11 @@ export class RetratosComponent {
     // Trigger the file input
     document.getElementById('img').click();
   }
+
+  deleteImage(index: number) {
+    // Remove the image at the specified index from the array
+    this.imageArray.splice(index, 1);
+  }
+
+
 }
