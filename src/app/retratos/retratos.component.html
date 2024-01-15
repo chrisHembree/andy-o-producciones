@@ -1,13 +1,10 @@
 <div class="retratos">
-
-<img [src]="url" title="retratos" height="200px" width="200px">
-<input type="file" id="img" style="display:none" (change)="onSelect($event)">
-<label for="img">Upload Image</label>
-
+  <div *ngFor="let imageUrl of imageArray">
+    <img [src]="imageUrl" title="retratos" height="200px" width="200px">
+  </div>
+  <input type="file" id="img" style="display:none" (change)="onSelect($event)">
+  <button (click)="selectImage()">Upload Image</button>
 </div>
-
-
-
 
 
 
