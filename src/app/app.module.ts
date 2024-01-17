@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
-
+import { MatGridListModule } from '@angular/material/grid-list';
 
 
 
@@ -39,6 +39,7 @@ import { AdminComponent } from './admin/admin.component';
     MatInputModule,
     FormsModule,
     HttpClientModule,
+    MatGridListModule,
 
 
   ],

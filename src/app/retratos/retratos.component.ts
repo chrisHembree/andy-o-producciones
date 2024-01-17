@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UploadService } from '../upload.service';
 
 @Component({
   selector: 'app-retratos',
@@ -8,7 +7,7 @@ import { UploadService } from '../upload.service';
 })
 export class RetratosComponent {
 
-  imageArray: string[] = [];
+  imageArray: { url: string, caption: string }[] = [];
 
   url = "https://static.vecteezy.com/system/resources/previews/016/916/479/original/placeholder-icon-design-free-vector.jpg";
 
@@ -17,20 +16,24 @@ export class RetratosComponent {
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (event: any) => {
-        this.imageArray.push(event.target.result);
+        this.imageArray.push({ url: event.target.result, caption: '' });
       };
     }
   }
 
   selectImage() {
-    // Trigger the file input
+
     document.getElementById('img').click();
   }
 
   deleteImage(index: number) {
-    // Remove the image at the specified index from the array
+
     this.imageArray.splice(index, 1);
   }
 
-
+  saveCaption(index: number) {
+    // Save the caption for the image at the specified index
+    console.log(`Caption saved: ${this.imageArray[index].caption}`);
+    // You can implement further logic to persist the caption, e.g., through a service or Firebase.
+  }
 }

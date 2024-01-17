@@ -1,11 +1,14 @@
-<div class="retratos">
-  <div *ngFor="let imageUrl of imageArray; let i = index">
-    <img [src]="imageUrl" title="retratos" height="200px" width="200px">
-    <button (click)="deleteImage(i)">Delete</button>
-  </div>
-  <input type="file" id="img" style="display:none" (change)="onSelect($event)">
-  <button (click)="selectImage()">Upload Image</button>
-</div>
+<input type="file" id="img" style="display:none" (change)="onSelect($event)">
+<button (click)="selectImage()">Upload Image</button>
 
+<mat-grid-list cols="2" rowHeight="300px" class="retratos-grid" gutterSize="50">
+  <mat-grid-tile *ngFor="let item of imageArray; let i = index" style="height: 300px;">
+    <img [src]="item.url" alt="retratos" class="images">
 
-
+    <div class="caption-container">
+      <div><input [(ngModel)]="item.caption" placeholder="Enter caption..."></div>
+      <button (click)="saveCaption(i)">Save</button>
+      <button (click)="deleteImage(i)">Delete image</button>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
