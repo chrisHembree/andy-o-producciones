@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { CaptionDialogComponent } from './caption-dialog/caption-dialog.component';
 
 
 
@@ -27,6 +28,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     RetratosComponent,
     LoginDialogComponent,
     AdminComponent,
+    CaptionDialogComponent,
 
 
   ],

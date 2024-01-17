@@ -5,6 +5,11 @@
   <mat-grid-tile *ngFor="let item of imageArray; let i = index" style="height: 300px;">
     <img [src]="item.url" alt="retratos" class="images">
 
+      <span>{{ item.caption }}</span>
+      <button mat-icon-button (click)="openCaptionDialog(i)">
+        <mat-icon>edit</mat-icon> </button>
+
+
     <div class="caption-container">
       <div><input [(ngModel)]="item.caption" placeholder="Enter caption..."></div>
       <button (click)="saveCaption(i)">Save</button>
