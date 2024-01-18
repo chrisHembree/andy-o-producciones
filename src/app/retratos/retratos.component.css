@@ -11,8 +11,20 @@
 }
 
 .caption-container {
-  text-align: center;
+
   margin-bottom: 10px; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+.caption-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Adjust as needed for spacing between buttons */
 }
 
 .input-container {

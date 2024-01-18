@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { UploadService } from '../upload.service';
-import { Entry } from '../entry.model';
+import { MatDialog } from '@angular/material/dialog';
+import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-homepage',
@@ -8,50 +9,52 @@ import { Entry } from '../entry.model';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent {
-  imageUrl: string | ArrayBuffer = '';
+  constructor(private dialog: MatDialog) {}
 
-  entryArray = [];
+  imageArray: { url: string, caption: string }[] = [];
 
-  constructor(private uploadService: UploadService) {}
-
-  onFileChange(event: any) {
-    const fileList: FileList = event.target.files;
-
-    if (fileList.length > 0) {
-      const file: File = fileList[0];
+  url = "https://static.vecteezy.com/system/resources/previews/016/916/479/original/placeholder-icon-design-free-vector.jpg";
 
 
-      this.previewImage(file);
-
-
-      this.uploadService.uploadFile(file).subscribe(
-        (response) => {
-
-          this.imageUrl = response.imageUrl;
-          console.log('File uploaded successfully. Image URL:', this.imageUrl);
-        },
-        (error) => {
-          console.error('Error uploading file:', error);
-        }
-      );
+  onSelect(event) {
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (event: any) => {
+        this.imageArray.push({ url: event.target.result, caption: '' });
+      };
     }
   }
 
+  selectImage() {
 
-  private previewImage(file: File) {
-    const reader = new FileReader();
+    document.getElementById('img').click();
+  }
 
-    reader.onload = (e: any) => {
-      this.imageUrl = e.target.result;
-    };
+  deleteImage(index: number) {
 
-    reader.readAsDataURL(file);
+    this.imageArray.splice(index, 1);
+  }
+
+  saveCaption(index: number) {
+    // Save the caption for the image at the specified index
+    console.log(`Caption saved: ${this.imageArray[index].caption}`);
+    // You can implement further logic to persist the caption, e.g., through a service or Firebase.
+  }
+
+  openCaptionDialog(index: number): void {
+    const dialogRef = this.dialog.open(CaptionDialogComponent, {
+      width: '400px',
+      data: { caption: this.imageArray[index].caption }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.imageArray[index].caption = result;
+      }
+    });
   }
 }
-
-
-
-
 
 
 
