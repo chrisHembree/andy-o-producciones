@@ -1,5 +1,5 @@
 .cinemtografia-grid {
-  max-width: 1500px;
+  max-width: 1650px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -39,3 +39,15 @@
   justify-content: space-between;
   height: 100%;
 }
+
+
+.caption{
+
+  font-family:'Agency FB', sans-serif;
+  font-size: 30px;
+
+}
+
+
+
+
