@@ -17,8 +17,14 @@ export class AppComponent {
     this.dialog.open(LoginDialogComponent, {
       width: '400px',
     });
-
-
   }
+
+  isUserAuthenticated(): boolean {
+    // Implement logic to check if the user is authenticated
+    // Return true if authenticated, false otherwise
+    // You might use an authentication service for this check
+    return true; // Replace with your actual authentication logic
+  }
+
 
 }

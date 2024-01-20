@@ -13,8 +13,7 @@ export class AdminComponent {
   constructor() {}
 
   onSubmit(): void {
-    // Handle login logic here (validate email and password)
-    // For simplicity, let's just close the dialog for now
+
 
   }
 }

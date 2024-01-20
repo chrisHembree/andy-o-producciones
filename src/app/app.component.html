@@ -1,7 +1,11 @@
 <div class="center-container">
   <img src="/assets/logonegro.jpg" alt="Andy Logo">
-<button class="login" (click)="openLoginDialog()" ></button>
-<h1>DIRECTOR DE CINEMATOGRAFÍA</h1>
+
+
+  <button *ngIf="isUserAuthenticated()" class="oldlogo" (click)="openLoginDialog()" ></button>
+
+
+  <h1>DIRECTOR DE CINEMATOGRAFÍA</h1>
 </div>
 
 <div class="pageoptions">

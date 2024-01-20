@@ -37,9 +37,11 @@ export class HomepageComponent {
   }
 
   saveCaption(index: number) {
-    // Save the caption for the image at the specified index
+
+
     console.log(`Caption saved: ${this.imageArray[index].caption}`);
-    // You can implement further logic to persist the caption, e.g., through a service or Firebase.
+
+
   }
 
   openCaptionDialog(index: number): void {
