@@ -18,6 +18,10 @@ export class HomepageComponent {
 
   imageArray: { url: string, caption: string }[] = [];
 
+  selectImage() {
+    document.getElementById('img').click();
+  }
+
   onSelect(event) {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
