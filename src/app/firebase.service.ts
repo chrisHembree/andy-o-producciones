@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { getDatabase, ref, set } from 'firebase/database';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
-  constructor(private db: AngularFireDatabase) {}
+  constructor(private db: AngularFireDatabase,
+    public storage: AngularFireStorage,) {}
 
   getContactData(): any {
     return this.db.object('/contactData').valueChanges();

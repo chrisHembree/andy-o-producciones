@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FirebaseService } from '../firebase.service';
 
 @Component({
@@ -12,7 +11,6 @@ import { FirebaseService } from '../firebase.service';
 export class HomepageComponent {
   constructor(
     private dialog: MatDialog,
-    private storage: AngularFireStorage,
     private firebaseService: FirebaseService
   ) {}
 
@@ -47,7 +45,7 @@ export class HomepageComponent {
   }
 
   private uploadImage(file: File, imageId: string): Promise<string> {
-    const storageRef = this.storage.ref(`pictures/cinematografia/${imageId}`);
+    const storageRef = this.firebaseService.storage.ref(`pictures/cinematografia/${imageId}`);
     const uploadTask = storageRef.put(file);
 
     return new Promise((resolve, reject) => {
