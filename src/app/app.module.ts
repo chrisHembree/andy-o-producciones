@@ -16,7 +16,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CaptionDialogComponent } from './caption-dialog/caption-dialog.component';
-
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { getAnalytics } from "firebase/analytics";
 
 
 @NgModule({
@@ -42,6 +47,11 @@ import { CaptionDialogComponent } from './caption-dialog/caption-dialog.componen
     FormsModule,
     HttpClientModule,
     MatGridListModule,
+    provideFirebaseApp(() => initializeApp({"projectId":"andyocine-9546f","appId":"1:529468443196:web:a72fc7b63986211d255139","databaseURL":"https://andyocine-9546f-default-rtdb.firebaseio.com","storageBucket":"andyocine-9546f.appspot.com","apiKey":"AIzaSyBi5XizKrXpU_HI5e9JvwyGpKtILmoU55c","authDomain":"andyocine-9546f.firebaseapp.com","messagingSenderId":"529468443196","measurementId":"G-X04TCS20LH"})),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideDatabase(() => getDatabase()),
+    provideStorage(() => getStorage()),
 
 
 

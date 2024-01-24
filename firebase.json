@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "andy-o-producciones",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

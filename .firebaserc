@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "andyocine-9546f": {
+      "hosting": {
+        "andy-o-producciones": [
+          "andyocine-9546f"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "andyocine-9546f"
+  }
+}

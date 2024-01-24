@@ -11,7 +11,6 @@ export class FirebaseService {
 
 
 
-
   getContactData(): any {
     return this.db.object('/contactData').valueChanges();
   }
@@ -21,12 +20,10 @@ export class FirebaseService {
   }
 
 
-
   writeCaption(caption: string): Promise<void> {
     // Use AngularFireDatabase for writing captions
     return this.db.list('captions').push({ caption });
   }
-
 
 
 
