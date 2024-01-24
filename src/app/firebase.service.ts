@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { getDatabase, ref, set } from "firebase/database";
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { getDatabase, ref, set } from 'firebase/database';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class FirebaseService {
   constructor(private db: AngularFireDatabase) {}
-
-
 
   getContactData(): any {
     return this.db.object('/contactData').valueChanges();
@@ -19,13 +16,10 @@ export class FirebaseService {
     return this.db.object('/contactData').update(contactData);
   }
 
-
   writeCaption(caption: string): Promise<void> {
-    // Use AngularFireDatabase for writing captions
-    return this.db.list('captions').push({ caption });
+    const db = getDatabase();
+    return set(ref(db, 'captions/' + caption), {
+      caption: caption
+    });
   }
-
-
-
-
 }
