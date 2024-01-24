@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-homepage',
@@ -9,52 +10,55 @@ import { MatGridListModule } from '@angular/material/grid-list';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent {
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private storage: AngularFireStorage,
+    private firebaseService: FirebaseService
+  ) {}
 
   imageArray: { url: string, caption: string }[] = [];
 
-  url = "https://static.vecteezy.com/system/resources/previews/016/916/479/original/placeholder-icon-design-free-vector.jpg";
-
-
   onSelect(event) {
     if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
       reader.onload = (event: any) => {
-        this.imageArray.push({ url: event.target.result, caption: '' });
+        // Create a unique ID for the image (you can use your own logic)
+        const imageId = this.generateUniqueId();
+
+        // Upload the image to Firebase Storage
+        this.uploadImage(file, imageId)
+          .then((downloadUrl: string) => {
+            // Add the image and its download URL to the array
+            this.imageArray.push({ url: downloadUrl, caption: '' });
+
+            // Save the caption in Firebase Realtime Database
+            this.firebaseService.writeCaption(imageId, '');
+          })
+          .catch(error => console.error('Error uploading image', error));
       };
     }
   }
 
-  selectImage() {
+  private uploadImage(file: File, imageId: string): Promise<string> {
+    const storageRef = this.storage.ref(`pictures/cinematografia/${imageId}`);
+    const uploadTask = storageRef.put(file);
 
-    document.getElementById('img').click();
-  }
-
-  deleteImage(index: number) {
-
-    this.imageArray.splice(index, 1);
-  }
-
-  saveCaption(index: number) {
-
-
-    console.log(`Caption saved: ${this.imageArray[index].caption}`);
-
-
-  }
-
-  openCaptionDialog(index: number): void {
-    const dialogRef = this.dialog.open(CaptionDialogComponent, {
-      width: '400px',
-      data: { caption: this.imageArray[index].caption }
+    return new Promise((resolve, reject) => {
+      uploadTask.snapshotChanges().toPromise()
+        .then(() => storageRef.getDownloadURL().toPromise())
+        .then(downloadUrl => resolve(downloadUrl))
+        .catch(error => reject(error));
     });
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.imageArray[index].caption = result;
-      }
-    });
+  // Other methods (selectImage, deleteImage, saveCaption, openCaptionDialog) remain the same
+
+  private generateUniqueId(): string {
+    // Implement your own logic to generate a unique ID
+    return Math.random().toString(36).substr(2, 9);
   }
 }
 

@@ -16,10 +16,8 @@ export class FirebaseService {
     return this.db.object('/contactData').update(contactData);
   }
 
-  writeCaption(caption: string): Promise<void> {
+  writeCaption(imageId: string, caption: string): Promise<void> {
     const db = getDatabase();
-    return set(ref(db, 'captions/' + caption), {
-      caption: caption
-    });
+    return set(ref(db, `captions/${imageId}`), { caption });
   }
 }
