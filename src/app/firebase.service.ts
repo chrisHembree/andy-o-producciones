@@ -10,16 +10,27 @@ export class FirebaseService {
   constructor(private db: AngularFireDatabase,
     public storage: AngularFireStorage,) {}
 
-  getContactData(): any {
-    return this.db.object('/contactData').valueChanges();
+  getcontactinfo(): any {
+    return this.db.object('/contactinfo').valueChanges();
   }
 
-  updateContactData(contactData: any): Promise<void> {
-    return this.db.object('/contactData').update(contactData);
+  updatecontactinfo(contactinfo: any): Promise<void> {
+    return this.db.object('/contactinfo').update(contactinfo);
   }
 
   writeCaption(imageId: string, caption: string): Promise<void> {
     const db = getDatabase();
     return set(ref(db, `captions/${imageId}`), { caption });
   }
+
+  getCinematografiaData() {
+        return this.db.list('pictures/cinematografia').valueChanges();
+  }
+
+  generateUniqueId(): string {
+    return Math.random().toString(36).substr(2, 9);
+  }
+
+
+
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
 import { FirebaseService } from '../firebase.service';
@@ -8,13 +8,18 @@ import { FirebaseService } from '../firebase.service';
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css']
 })
-export class HomepageComponent {
+export class HomepageComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private firebaseService: FirebaseService
   ) {}
 
   imageArray: { url: string, caption: string }[] = [];
+
+  ngOnInit() {
+
+    this.fetchImagesAndCaptions();
+  }
 
   selectImage() {
     document.getElementById('img').click();
@@ -27,16 +32,16 @@ export class HomepageComponent {
       reader.readAsDataURL(file);
 
       reader.onload = (event: any) => {
-        // Create a unique ID for the image (you can use your own logic)
-        const imageId = this.generateUniqueId();
 
-        // Upload the image to Firebase Storage
+        const imageId = this.firebaseService.generateUniqueId();
+
+
         this.uploadImage(file, imageId)
           .then((downloadUrl: string) => {
-            // Add the image and its download URL to the array
+
             this.imageArray.push({ url: downloadUrl, caption: '' });
 
-            // Save the caption in Firebase Realtime Database
+
             this.firebaseService.writeCaption(imageId, '');
           })
           .catch(error => console.error('Error uploading image', error));
@@ -56,12 +61,23 @@ export class HomepageComponent {
     });
   }
 
-  // Other methods (selectImage, deleteImage, saveCaption, openCaptionDialog) remain the same
+  private fetchImagesAndCaptions(): void {
+    // Fetch data from Firebase and update the imageArray
+    this.firebaseService.getCinematografiaData().subscribe(data => {
+      // Clear the existing array
+      this.imageArray = [];
 
-  private generateUniqueId(): string {
-    // Implement your own logic to generate a unique ID
-    return Math.random().toString(36).substr(2, 9);
+      // Populate the array with data from Firebase
+      for (const key of Object.keys(data)) {
+        const item = data[key];
+        this.imageArray.push({ url: item.url, caption: item.caption });
+      }
+    });
   }
+
+  // Other methods (deleteImage, saveCaption, openCaptionDialog) remain the same
+
+
 }
 
 

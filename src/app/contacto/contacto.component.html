@@ -3,27 +3,31 @@
   <div class="contactinfo" *ngIf="!editingMode">
     <button class="editcontact" (click)="toggleEditing()">Edit</button> <br>
     <div>
-   <img class="walogo" src="/assets/walogo.jpg" style="padding-right: 8px;"> <span style="font-size: 20px;">{{ phoneNumber }}</span> <br>
-  </div>
-  <br>
-  <div>
-   <img class="gmlogo" src="/assets/gmlogo.jpg" style="padding-right: 8px;" > <span style="font-size: 20px;">{{ email }}</span> <br>
-  </div>
-  <br>
-   <div> <img class="iglogo" src="/assets/iglogo.jpg" style="padding-right: 8px;" > <span style="font-size: 20px;">{{ instaHandle }}</span> </div>
+      <img class="walogo" src="/assets/walogo.jpg" style="padding-right: 8px;" />
+      <span style="font-size: 20px;">{{ contactData.whatsapp }}</span> <br />
+    </div>
+    <br />
+    <div>
+      <img class="gmlogo" src="/assets/gmlogo.jpg" style="padding-right: 8px;" />
+      <span style="font-size: 20px;">{{ contactData.email }}</span> <br />
+    </div>
+    <br />
+    <div>
+      <img class="iglogo" src="/assets/iglogo.jpg" style="padding-right: 8px;" />
+      <span style="font-size: 20px;">{{ contactData.instagram }}</span>
+    </div>
   </div>
 
   <div class="contactinfo" *ngIf="editingMode">
     <button class="editcontact" (click)="saveChanges()">Save</button> <br>
-    <input [(ngModel)]="phoneNumber" placeholder="Enter Phone Number"><br>
-    <input [(ngModel)]="email" placeholder="Enter Email"><br>
-    <input [(ngModel)]="instaHandle" placeholder="Enter Twitter Handle">
+    <input [(ngModel)]="contactData.whatsapp" placeholder="Enter Phone Number" /><br />
+    <input [(ngModel)]="contactData.email" placeholder="Enter Email" /><br />
+    <input [(ngModel)]="contactData.instagram" placeholder="Enter Instagram Handle" />
   </div>
 </div>
 <div>
   <span>.</span>
 </div>
-
 
 
 

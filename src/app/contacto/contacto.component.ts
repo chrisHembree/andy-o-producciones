@@ -1,27 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-contacto',
   templateUrl: './contacto.component.html',
-  styleUrl: './contacto.component.css'
+  styleUrls: ['./contacto.component.css'] // Correct property name is styleUrls
 })
-export class ContactoComponent {
-
+export class ContactoComponent implements OnInit {
   editingMode = false;
-  phoneNumber = '3152490008';
-  email = 'ANDYOCINE@GMAIL.COM';
-  instaHandle = '@ANDYOCINE';
+  contactData: any = {};
 
-  toggleEditing() {
+  constructor(private firebaseService: FirebaseService) {}
+
+  ngOnInit(): void {
+    // Fetch contact data from Firebase on component initialization
+    this.firebaseService.getcontactinfo().subscribe((data: any) => {
+      this.contactData = data;
+    });
+  }
+
+  toggleEditing(): void {
     this.editingMode = !this.editingMode;
   }
 
-  saveChanges() {
-
-
+  saveChanges(): void {
+    // Update contact data in Firebase when Save button is clicked
+    this.firebaseService.updatecontactinfo(this.contactData);
     this.editingMode = false;
   }
-
-
-
 }
