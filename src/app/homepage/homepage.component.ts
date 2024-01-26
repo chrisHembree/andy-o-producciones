@@ -66,6 +66,24 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  openCaptionDialog(index: number): void {
+    const dialogRef = this.dialog.open(CaptionDialogComponent, {
+      width: '400px',
+      data: { caption: this.imageArray[index].caption }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.imageArray[index].caption = result;
+      }
+    });
+  }
+
+
+
+
+
+
 
   }
 
