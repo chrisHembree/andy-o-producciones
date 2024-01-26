@@ -17,8 +17,7 @@ export class HomepageComponent implements OnInit {
   imageArray: { url: string, caption: string }[] = [];
 
   ngOnInit() {
-
-    this.fetchImagesAndCaptions();
+    this.loadCinematografiaImages();
   }
 
   selectImage() {
@@ -49,6 +48,12 @@ export class HomepageComponent implements OnInit {
     }
   }
 
+  private loadCinematografiaImages() {
+    this.firebaseService.getCinematografiaData().subscribe((imageUrls: string[]) => {
+      this.imageArray = imageUrls.map(url => ({ url, caption: '' }));
+    });
+  }
+
   private uploadImage(file: File, imageId: string): Promise<string> {
     const storageRef = this.firebaseService.storage.ref(`pictures/cinematografia/${imageId}`);
     const uploadTask = storageRef.put(file);
@@ -61,24 +66,13 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  private fetchImagesAndCaptions(): void {
-    // Fetch data from Firebase and update the imageArray
-    this.firebaseService.getCinematografiaData().subscribe(data => {
-      // Clear the existing array
-      this.imageArray = [];
 
-      // Populate the array with data from Firebase
-      for (const key of Object.keys(data)) {
-        const item = data[key];
-        this.imageArray.push({ url: item.url, caption: item.caption });
-      }
-    });
   }
 
-  // Other methods (deleteImage, saveCaption, openCaptionDialog) remain the same
 
 
-}
+
+
 
 
 
