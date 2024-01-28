@@ -1,16 +1,59 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { getDatabase, ref, set } from 'firebase/database';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+import { getDatabase } from 'firebase/database';
+import { set } from 'firebase/database';
+import {  ref as dbRef,} from 'firebase/database';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
-  constructor(private db: AngularFireDatabase,
-    public storage: AngularFireStorage,) {}
+  constructor(public storage: AngularFireStorage,
+    private db: AngularFireDatabase,) {}
+
+  getCinematografiaData(): Observable<string[]> {
+    const listRef = ref(this.storage.storage, 'pictures/cinematografia');
+
+    return new Observable<string[]>(observer => {
+      listAll(listRef)
+        .then(res => {
+          const imageIds = res.items.map(item => item.name);
+          observer.next(imageIds);
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error fetching cinematografia data:', error);
+          observer.error(error);
+        });
+    });
+  }
+
+  getImageDownloadURL(imageId: string) {
+    const storageReference = ref(this.storage.storage, `pictures/cinematografia/${imageId}`);
+    return getDownloadURL(storageReference);
+  }
+
+  writeCaption(imageId: string, caption: string): Promise<void> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, `captions/${imageId}`);
+
+    return set(captionsRef, { caption });
+  }
+  generateUniqueId(): string {
+    return Math.random().toString(36).substr(2, 9);
+  }
+
+  uploadImage(folder: string, file: File): Promise<string> {
+    const imageId = this.generateUniqueId();
+    const storageRef = ref(this.storage.storage, `pictures/${folder}/${imageId}`);
+
+    return uploadBytes(storageRef, file).then(() => {
+      return imageId;
+    });
+  }
 
   getcontactinfo(): any {
     return this.db.object('/contactinfo').valueChanges();
@@ -19,27 +62,5 @@ export class FirebaseService {
   updatecontactinfo(contactinfo: any): Promise<void> {
     return this.db.object('/contactinfo').update(contactinfo);
   }
-
-  writeCaption(imageId: string, caption: string): Promise<void> {
-    const db = getDatabase();
-    return set(ref(db, `captions/${imageId}`), { caption });
-  }
-
-  getCinematografiaData() {
-    return this.storage.ref('pictures/cinematografia').listAll().pipe(
-      catchError(error => {
-        console.error('Error fetching cinematografia data:', error);
-        return [];
-      }),
-      // Map the items to their download URLs
-      map(result => result.items.map(item => item.getDownloadURL()))
-    );
-  }
-
-  generateUniqueId(): string {
-    return Math.random().toString(36).substr(2, 9);
-  }
-
-
 
 }

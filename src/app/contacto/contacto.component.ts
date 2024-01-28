@@ -24,7 +24,7 @@ export class ContactoComponent implements OnInit {
   }
 
   saveChanges(): void {
-    // Update contact data in Firebase when Save button is clicked
+    // // Update contact data in Firebase when Save button is clicked
     this.firebaseService.updatecontactinfo(this.contactData);
     this.editingMode = false;
   }
