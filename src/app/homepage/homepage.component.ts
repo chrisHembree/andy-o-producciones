@@ -53,21 +53,43 @@ export class HomepageComponent implements OnInit {
       error => console.error('Error loading cinematografia data:', error)
     );
   }
-}
+
+  openCaptionDialog(index: number): void {
+    const imageId = this.firebaseService.generateUniqueId();
+
+    const dialogRef = this.dialog.open(CaptionDialogComponent, {
+      width: '400px',
+      data: { caption: this.imageArray[index].caption }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.imageArray[index].caption = result;
+
+        // Update the caption in Firebase Realtime Database
+        this.firebaseService.writeCaption(imageId, result);
+      }
+    });
+  }
+
+  deleteImage(index: number): void {
+    const imageId = this.firebaseService.generateUniqueId();
+    const imageUrl = this.imageArray[index].url;
+
+
+    this.firebaseService.deleteImage('cinematografia', imageId);
+
+
+    this.firebaseService.deleteCaption(imageId);
+
+
+    this.imageArray.splice(index, 1);
+  }
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
+  }
 

@@ -7,6 +7,7 @@ import { set } from 'firebase/database';
 import {  ref as dbRef,} from 'firebase/database';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,6 +43,18 @@ export class FirebaseService {
 
     return set(captionsRef, { caption });
   }
+
+  deleteImage(folder: string, imageId: string): void {
+    const storageRef = this.storage.ref(`pictures/${folder}/${imageId}`);
+    storageRef.delete().toPromise().catch(error => console.error('Error deleting image', error));
+  }
+
+  deleteCaption(imageId: string): void {
+    const captionsRef = ref(this.db, `captions/${imageId}`);
+    set(captionsRef, null).catch(error => console.error('Error deleting caption', error));
+  }
+
+
   generateUniqueId(): string {
     return Math.random().toString(36).substr(2, 9);
   }
@@ -62,5 +75,7 @@ export class FirebaseService {
   updatecontactinfo(contactinfo: any): Promise<void> {
     return this.db.object('/contactinfo').update(contactinfo);
   }
+
+
 
 }
