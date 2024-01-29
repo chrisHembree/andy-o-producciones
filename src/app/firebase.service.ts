@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
-import { getDatabase } from 'firebase/database';
+import { getDatabase, remove } from 'firebase/database';
 import { set } from 'firebase/database';
 import {  ref as dbRef,} from 'firebase/database';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-
+import { getStorage, deleteObject } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -44,15 +44,19 @@ export class FirebaseService {
     return set(captionsRef, { caption });
   }
 
-  deleteImage(folder: string, imageId: string): void {
-    const storageRef = this.storage.ref(`pictures/${folder}/${imageId}`);
-    storageRef.delete().toPromise().catch(error => console.error('Error deleting image', error));
+  deleteImage(path: string): Promise<void> {
+    const storageRef = this.storage.ref(path);
+    return storageRef.delete().toPromise();
   }
 
-  deleteCaption(imageId: string): void {
-    const captionsRef = ref(this.db, `captions/${imageId}`);
-    set(captionsRef, null).catch(error => console.error('Error deleting caption', error));
+  deleteCaption(imageId: string): Observable<void> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, `captions/${imageId}`);
+    return from(remove(captionsRef));
   }
+
+
+
 
 
   generateUniqueId(): string {
