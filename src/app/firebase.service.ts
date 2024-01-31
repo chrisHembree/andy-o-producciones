@@ -44,8 +44,10 @@ export class FirebaseService {
     return set(captionsRef, { caption });
   }
 
+
+
   deleteImage(path: string): Promise<void> {
-    const storageRef = this.storage.ref(path);
+    const storageRef = this.storage.refFromURL(path);
     return storageRef.delete().toPromise();
   }
 

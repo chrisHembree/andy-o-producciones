@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
 import { FirebaseService } from '../firebase.service';
-import { getStorage, deleteObject } from "firebase/storage";
+import { getStorage, deleteObject, ref, StorageReference } from "firebase/storage";
+
+
 
 @Component({
   selector: 'app-homepage',
@@ -67,37 +69,16 @@ export class HomepageComponent implements OnInit {
       if (result !== undefined) {
         this.imageArray[index].caption = result;
 
-        // Update the caption in Firebase Realtime Database
+
         this.firebaseService.writeCaption(imageId, result);
       }
     });
   }
 
-  deleteImage(index: number): void {
-    if (index >= 0 && index < this.imageArray.length) {
-      const imageId = this.firebaseService.generateUniqueId();
-      const imageUrl = this.imageArray[index].url;
+  deleteTheImage(url) {
+    this.firebaseService.deleteImage(url)
 
-      // Create a reference to the file to delete
-      const storageRef = this.firebaseService.storage.ref(`pictures/cinematografia/${imageId}`);
-
-      // Delete the file
-      deleteObject(storageRef).then(() => {
-        // File deleted successfully
-
-        // Remove the image from the array
-        this.imageArray.splice(index, 1);
-
-        // Optionally, also remove the caption from Firebase Realtime Database
-        // this.firebaseService.deleteCaption(imageId);
-      }).catch((error) => {
-        console.error('Error deleting image:', error);
-      });
-    }
   }
-
-
-
 
   }
 
