@@ -37,13 +37,12 @@ export class FirebaseService {
     return getDownloadURL(storageReference);
   }
 
-  writeCaption(imageId: string, caption: string): Promise<void> {
+  writeCaption(captionId: string, caption: string): Promise<void> {
     const db = getDatabase();
-    const captionsRef = dbRef(db, `captions/${imageId}`);
+    const captionsRef = dbRef(db, `captions/${captionId}`);
 
     return set(captionsRef, { caption });
   }
-
 
 
   deleteImage(path: string): Promise<void> {
@@ -51,9 +50,9 @@ export class FirebaseService {
     return storageRef.delete().toPromise();
   }
 
-  deleteCaption(imageId: string): Observable<void> {
+  deleteCaption(captionId: string): Observable<void> {
     const db = getDatabase();
-    const captionsRef = dbRef(db, `captions/${imageId}`);
+    const captionsRef = dbRef(db, `captions/${captionId}`);
     return from(remove(captionsRef));
   }
 
