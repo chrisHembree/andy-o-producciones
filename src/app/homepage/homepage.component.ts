@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
 import { FirebaseService } from '../firebase.service';
 import { getStorage, deleteObject, ref, StorageReference } from "firebase/storage";
-
+import {  ref as dbRef,} from 'firebase/database';
 
 
 @Component({
@@ -58,7 +58,7 @@ export class HomepageComponent implements OnInit {
   }
 
   openCaptionDialog(index: number): void {
-    const captionId = this.firebaseService.generateUniqueId();
+    const captionId = dbRef(db, `captions/${captionId}`);
 
     const dialogRef = this.dialog.open(CaptionDialogComponent, {
       width: '400px',
