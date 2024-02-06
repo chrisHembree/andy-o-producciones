@@ -33,8 +33,10 @@ export class HomepageComponent implements OnInit {
 
       this.uploadImage(file)
         .then(imageId => {
-          this.imageArray.push({ url: '', caption: '' });
-          this.firebaseService.writeCaption(imageId,'');
+          if (this.imageArray.length > 0) {
+            this.imageArray.push({ url: '', caption: '' });
+            this.firebaseService.writeCaption(imageId, '');
+          }
         })
         .catch(error => console.error('Error uploading image', error));
     }
@@ -58,7 +60,7 @@ export class HomepageComponent implements OnInit {
   }
 
   openCaptionDialog(index: number): void {
-    const captionId = dbRef(db, `captions/${captionId}`);
+    const captionId = this.firebaseService.generateUniqueId();
 
     const dialogRef = this.dialog.open(CaptionDialogComponent, {
       width: '400px',
@@ -69,11 +71,11 @@ export class HomepageComponent implements OnInit {
       if (result !== undefined) {
         this.imageArray[index].caption = result;
 
-        this.firebaseService.writeCaption(captionId, result);
+        const captionsPath = `captions/${captionId}`;
+        this.firebaseService.writeCaption(captionsPath, result);
       }
     });
   }
-
   deleteTheImage(url) {
     this.firebaseService.deleteImage(url)
 

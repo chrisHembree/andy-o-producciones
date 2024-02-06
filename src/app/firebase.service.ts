@@ -37,9 +37,9 @@ export class FirebaseService {
     return getDownloadURL(storageReference);
   }
 
-  writeCaption(captionId: string, caption: string): Promise<void> {
+  writeCaption(captionsPath: string, caption: string): Promise<void> {
     const db = getDatabase();
-    const captionsRef = dbRef(db, `captions/${captionId}`);
+    const captionsRef = dbRef(db, captionsPath);
 
     return set(captionsRef, { caption });
   }
