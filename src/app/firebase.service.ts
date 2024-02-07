@@ -4,7 +4,7 @@ import { Observable, from } from 'rxjs';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { getDatabase, remove } from 'firebase/database';
 import { set } from 'firebase/database';
-import {  ref as dbRef,} from 'firebase/database';
+import {  ref as dbRef, onValue} from 'firebase/database';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { getStorage, deleteObject } from "firebase/storage";
 
@@ -36,6 +36,16 @@ export class FirebaseService {
     const storageReference = ref(this.storage.storage, `pictures/cinematografia/${imageId}`);
     return getDownloadURL(storageReference);
   }
+
+
+getCaption(){
+  const db = getDatabase();
+  const captionRef = ref(db, 'posts/' + postId + '/starCount');
+  onValue(captionRef, (snapshot) => {
+    const data = snapshot.val();
+    updateStarCount(postElement, data);
+  });
+}
 
   writeCaption(captionsPath: string, caption: string): Promise<void> {
     const db = getDatabase();

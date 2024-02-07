@@ -51,6 +51,7 @@ export class HomepageComponent implements OnInit {
       (imageIds: string[]) => {
         imageIds.forEach(imageId => {
           this.firebaseService.getImageDownloadURL(imageId).then(downloadUrl => {
+
             this.imageArray.push({ url: downloadUrl, caption: '' });
           });
         });
