@@ -40,7 +40,7 @@ export class FirebaseService {
 
 getCaption(){
   const db = getDatabase();
-  const captionRef = dbRef(db, 'captionss/' + captionId + '/starCount');
+  const captionRef = dbRef(db, 'captions/' + captionId + '/starCount');
   onValue(captionRef, (snapshot) => {
     const data = snapshot.val();
     updateStarCount(postElement, data);
