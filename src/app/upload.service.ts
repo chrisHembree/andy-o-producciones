@@ -16,6 +16,7 @@ export class UploadService {
 
     return this.http.post<any>('/api/upload', formData);
   }
+
 }
 
 

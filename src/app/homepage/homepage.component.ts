@@ -79,11 +79,27 @@ export class HomepageComponent implements OnInit {
       }
     });
   }
+
   deleteTheImage(url) {
-    this.firebaseService.deleteImage(url)
+    const index = this.imageArray.findIndex(item => item.url === url);
 
+    if (index !== -1) {
+      const captionId = this.captions[index]?.captionId;
+
+      this.firebaseService.deleteImage(url).then(() => {
+        if (captionId) {
+          this.firebaseService.deleteCaption(captionId).subscribe(
+            () => {
+
+              this.imageArray.splice(index, 1);
+              this.captions.splice(index, 1);
+            },
+            error => console.error('Error deleting caption:', error)
+          );
+        }
+      }).catch(error => console.error('Error deleting image:', error));
+    }
   }
-
 
   private loadCaptionsData() {
     this.firebaseService.getCaptions().subscribe(
@@ -93,9 +109,6 @@ export class HomepageComponent implements OnInit {
       error => console.error('Error loading captions data:', error)
     );
   }
-
-
-
 
 
 
