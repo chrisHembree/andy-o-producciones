@@ -16,7 +16,9 @@
         <div>
           <span class="caption" >{{ item.caption }}</span>
         </div>
-
+        <div *ngIf="captions[i]">
+          <span class="caption">{{ captions[i].caption }}</span>
+        </div>
       </div>
 
     </div>

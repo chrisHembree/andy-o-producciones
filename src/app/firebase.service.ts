@@ -38,14 +38,22 @@ export class FirebaseService {
   }
 
 
-getCaption(){
-  const db = getDatabase();
-  const captionRef = dbRef(db, 'captions/' + captionId + '/starCount');
-  onValue(captionRef, (snapshot) => {
-    const data = snapshot.val();
-    updateStarCount(postElement, data);
-  });
-}
+  getCaptions(): Observable<any[]> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, 'captions');
+
+    return new Observable<any[]>(observer => {
+      onValue(captionsRef, snapshot => {
+        const captionsData = snapshot.val();
+        const captionsArray = Object.keys(captionsData || {}).map(key => ({
+          captionId: key,
+          caption: captionsData[key].caption
+        }));
+        observer.next(captionsArray);
+        observer.complete();
+      });
+    });
+  }
 
   writeCaption(captionsPath: string, caption: string): Promise<void> {
     const db = getDatabase();

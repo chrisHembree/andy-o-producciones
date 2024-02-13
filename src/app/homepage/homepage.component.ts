@@ -18,9 +18,11 @@ export class HomepageComponent implements OnInit {
   ) {}
 
   imageArray: { url: string, caption: string }[] = [];
+  captions: { captionId: string, caption: string }[] = [];
 
   ngOnInit() {
     this.loadCinematografiaData();
+    this.loadCaptionsData();
   }
 
   selectImage() {
@@ -81,6 +83,21 @@ export class HomepageComponent implements OnInit {
     this.firebaseService.deleteImage(url)
 
   }
+
+
+  private loadCaptionsData() {
+    this.firebaseService.getCaptions().subscribe(
+      (captionsData: { captionId: string, caption: string }[]) => {
+        this.captions = captionsData;
+      },
+      error => console.error('Error loading captions data:', error)
+    );
+  }
+
+
+
+
+
 
   }
 
