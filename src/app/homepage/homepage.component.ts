@@ -37,14 +37,14 @@ export class HomepageComponent implements OnInit {
         .then(imageId => {
           if (this.imageArray.length > 0) {
             this.imageArray.push({ url: '', caption: '' });
-            this.firebaseService.writeCaption(imageId, '');
+            this.firebaseService.writeCaption(imageId.toString(), '');
           }
         })
         .catch(error => console.error('Error uploading image', error));
     }
   }
 
-  private uploadImage(file: File): Promise<string> {
+  private uploadImage(file: File): Promise<number> {
     return this.firebaseService.uploadImage('cinematografia', file);
   }
 
