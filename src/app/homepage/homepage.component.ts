@@ -17,7 +17,7 @@ export class HomepageComponent implements OnInit {
     private firebaseService: FirebaseService
   ) {}
 
-  imageArray: { url: string, caption: string }[] = [];
+  imageArray: { url: string, caption: string, id: number }[] = [];
   captions: { captionId: string, caption: string }[] = [];
 
   ngOnInit() {
@@ -36,13 +36,14 @@ export class HomepageComponent implements OnInit {
       this.uploadImage(file)
         .then(imageId => {
           if (this.imageArray.length > 0) {
-            this.imageArray.push({ url: '', caption: '' });
+            this.imageArray.push({ url: '', caption: '', id: 0 });
             this.firebaseService.writeCaption(imageId.toString(), '');
           }
         })
         .catch(error => console.error('Error uploading image', error));
     }
   }
+
 
   private uploadImage(file: File): Promise<number> {
     return this.firebaseService.uploadImage('cinematografia', file);
@@ -51,11 +52,15 @@ export class HomepageComponent implements OnInit {
   private loadCinematografiaData() {
     this.firebaseService.getCinematografiaData().subscribe(
       (imageIds: string[]) => {
-        imageIds.forEach(imageId => {
-          this.firebaseService.getImageDownloadURL(imageId).then(downloadUrl => {
+        const promises = imageIds.map(async (imageId) => {
+          const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
+          const numericId = +imageId;
+          this.imageArray.push({ url: downloadUrl, caption: '', id: numericId });
+        });
 
-            this.imageArray.push({ url: downloadUrl, caption: '' });
-          });
+        // Wait for all promises to resolve before sorting
+        Promise.all(promises).then(() => {
+          this.imageArray.sort((a, b) => a.id - b.id);
         });
       },
       error => console.error('Error loading cinematografia data:', error)
