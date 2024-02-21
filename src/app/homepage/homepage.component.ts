@@ -79,6 +79,7 @@ export class HomepageComponent implements OnInit {
       if (result !== undefined) {
         this.imageArray[index].caption = result;
 
+        // Use the sequential captionId for the caption
         const captionsPath = `captions/${captionId}`;
         this.firebaseService.writeCaption(captionsPath, result);
       }

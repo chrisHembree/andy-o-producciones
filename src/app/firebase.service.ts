@@ -15,7 +15,7 @@ export class FirebaseService {
   constructor(public storage: AngularFireStorage,
     private db: AngularFireDatabase,) {}
     private lastImageId: number = 0;
-
+    private lastCaptionId: number = 0;
 
   getCinematografiaData(): Observable<string[]> {
     const listRef = ref(this.storage.storage, 'pictures/cinematografia');
@@ -80,8 +80,10 @@ export class FirebaseService {
 
 
 
-  generateUniqueId(): string {
-    return Math.random().toString(36).substr(2, 9);
+  generateUniqueId(): number {
+    // Increment the lastCaptionId before using it for the current upload
+    this.lastCaptionId++;
+    return this.lastCaptionId;
   }
 
   uploadImage(folder: string, file: File): Promise<number> {
