@@ -5,6 +5,12 @@ import { FirebaseService } from '../firebase.service';
 import { getStorage, deleteObject, ref, StorageReference } from "firebase/storage";
 import {  ref as dbRef,} from 'firebase/database';
 
+interface ImageItem {
+  url: string;
+  caption: string;
+  id: number;
+  captionText?: string;  // Add this line to make captionText optional
+}
 
 @Component({
   selector: 'app-homepage',
@@ -16,6 +22,7 @@ export class HomepageComponent implements OnInit {
     private dialog: MatDialog,
     private firebaseService: FirebaseService
   ) {}
+
 
   imageArray: { url: string, caption: string, id: number }[] = [];
   captions: { captionId: string, caption: string }[] = [];
@@ -55,11 +62,17 @@ export class HomepageComponent implements OnInit {
         const promises = imageIds.map(async (imageId) => {
           const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
           const numericId = +imageId;
-          this.imageArray.push({ url: downloadUrl, caption: '', id: numericId });
+
+          // Create a mapping between image ID and caption
+          const caption = await this.firebaseService.getCaptionByImageId(imageId);
+
+          // Explicitly specify the properties to resolve TypeScript error
+          this.imageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
         });
 
         // Wait for all promises to resolve before sorting
         Promise.all(promises).then(() => {
+          // Sort the imageArray based on the IDs
           this.imageArray.sort((a, b) => a.id - b.id);
         });
       },

@@ -57,6 +57,24 @@ export class FirebaseService {
     });
   }
 
+  getCaptionByImageId(imageId: string): Promise<string> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, `captions/${imageId}`);
+
+    return new Promise<string>((resolve, reject) => {
+      onValue(captionsRef, snapshot => {
+        const captionData = snapshot.val();
+        if (captionData) {
+          resolve(captionData.caption);
+        } else {
+          resolve('');
+        }
+      }, reject);
+    });
+  }
+
+
+
   writeCaption(captionsPath: string, caption: string): Promise<void> {
     const db = getDatabase();
     const captionsRef = dbRef(db, captionsPath);
