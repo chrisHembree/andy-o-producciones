@@ -105,15 +105,17 @@ export class FirebaseService {
   }
 
   uploadImage(folder: string, file: File): Promise<number> {
-    // Increment the lastImageId before using it for the current upload
-    this.lastImageId++;
+    const listRef = ref(this.storage.storage, `pictures/${folder}`);
 
-    const imageId = this.lastImageId;
-    const storageRef = ref(this.storage.storage, `pictures/${folder}/${imageId}`);
 
-    return uploadBytes(storageRef, file).then(() => {
-      return this.lastImageId;
-    });
+    return listAll(listRef)
+      .then(res => res.items.length)
+      .then(existingImageCount => {
+        const imageId = existingImageCount + 1;
+        const storageRef = ref(this.storage.storage, `pictures/${folder}/${imageId}`);
+
+        return uploadBytes(storageRef, file).then(() => imageId);
+      });
   }
 
   getcontactinfo(): any {
