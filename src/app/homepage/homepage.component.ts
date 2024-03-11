@@ -23,14 +23,32 @@ export class HomepageComponent implements OnInit {
     private firebaseService: FirebaseService
   ) {}
 
-
   imageArray: { url: string, caption: string, id: number }[] = [];
   captions: { captionId: string, caption: string }[] = [];
 
   ngOnInit() {
-    this.loadCinematografiaData();
-    this.loadCaptionsData();
+    this.loadData();
   }
+
+  private loadData() {
+    this.firebaseService.getCinematografiaData().subscribe(
+      (imageIds: string[]) => {
+        const promises = imageIds.map(async (imageId) => {
+          const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
+          const numericId = +imageId;
+          const caption = await this.firebaseService.getCaptionByImageId(imageId);
+          this.imageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
+        });
+
+        Promise.all(promises).then(() => {
+          this.imageArray.sort((a, b) => a.id - b.id);
+          this.loadCaptionsData(); // Load captions after images
+        });
+      },
+      error => console.error('Error loading cinematografia data:', error)
+    );
+  }
+
 
   selectImage() {
     document.getElementById('img').click();
@@ -56,46 +74,46 @@ export class HomepageComponent implements OnInit {
     return this.firebaseService.uploadImage('cinematografia', file);
   }
 
-  private loadCinematografiaData() {
-    this.firebaseService.getCinematografiaData().subscribe(
-      (imageIds: string[]) => {
-        const promises = imageIds.map(async (imageId) => {
-          const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
-          const numericId = +imageId;
+  private loadCinematografiaData(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.firebaseService.getCinematografiaData().subscribe(
+        (imageIds: string[]) => {
+          const promises = imageIds.map(async (imageId) => {
+            const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
+            const numericId = +imageId;
 
-          // Create a mapping between image ID and caption
-          const caption = await this.firebaseService.getCaptionByImageId(imageId);
+            const caption = await this.firebaseService.getCaptionByImageId(imageId);
+            this.imageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
+          });
 
-          // Explicitly specify the properties to resolve TypeScript error
-          this.imageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
-        });
-
-        // Wait for all promises to resolve before sorting
-        Promise.all(promises).then(() => {
-          // Sort the imageArray based on the IDs
-          this.imageArray.sort((a, b) => a.id - b.id);
-        });
-      },
-      error => console.error('Error loading cinematografia data:', error)
-    );
-  }
-
-  openCaptionDialog(index: number): void {
-    const captionId = this.firebaseService.generateUniqueId();
-
-    const dialogRef = this.dialog.open(CaptionDialogComponent, {
-      width: '400px',
-      data: { caption: this.imageArray[index].caption }
+          Promise.all(promises).then(() => {
+            this.imageArray.sort((a, b) => a.id - b.id);
+            resolve(); // Resolve the outer promise when all image data is loaded
+          });
+        },
+        error => {
+          console.error('Error loading cinematografia data:', error);
+          reject(error); // Reject the outer promise if there is an error
+        }
+      );
     });
+  }
+  openCaptionDialog(index: number): void {
+    this.firebaseService.generateUniqueId().then(captionId => {
+      const dialogRef = this.dialog.open(CaptionDialogComponent, {
+        width: '400px',
+        data: { caption: this.imageArray[index].caption }
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.imageArray[index].caption = result;
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== undefined) {
+          this.imageArray[index].caption = result;
 
-        // Use the sequential captionId for the caption
-        const captionsPath = `captions/${captionId}`;
-        this.firebaseService.writeCaption(captionsPath, result);
-      }
+          // Use the sequential captionId for the caption
+          const captionsPath = `captions/${captionId}`;
+          this.firebaseService.writeCaption(captionsPath, result);
+        }
+      });
     });
   }
 
@@ -128,7 +146,6 @@ export class HomepageComponent implements OnInit {
       error => console.error('Error loading captions data:', error)
     );
   }
-
 
 
   }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable, from } from 'rxjs';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
-import { getDatabase, remove } from 'firebase/database';
+import { get, getDatabase, remove } from 'firebase/database';
 import { set } from 'firebase/database';
 import {  ref as dbRef, onValue} from 'firebase/database';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
@@ -98,10 +98,16 @@ export class FirebaseService {
 
 
 
-  generateUniqueId(): number {
-    // Increment the lastCaptionId before using it for the current upload
-    this.lastCaptionId++;
-    return this.lastCaptionId;
+  generateUniqueId(): Promise<number> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, 'captions');
+
+    return get(captionsRef)
+      .then(snapshot => {
+        const existingCaptionCount = snapshot.val() ? Object.keys(snapshot.val()).length : 0;
+        const captionId = existingCaptionCount + 1;
+        return captionId;
+      });
   }
 
   uploadImage(folder: string, file: File): Promise<number> {
