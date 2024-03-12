@@ -9,7 +9,7 @@ interface ImageItem {
   url: string;
   caption: string;
   id: number;
-  captionText?: string;  // Add this line to make captionText optional
+  captionText?: string;
 }
 
 @Component({

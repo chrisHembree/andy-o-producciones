@@ -12,14 +12,13 @@
 
 .caption-container {
 
-  margin-bottom: 10px; /* Adjust as needed */
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 100px; /* Set a fixed height for the caption container */
+  height: 100px;
 
-  padding: 10px; /* Add padding for better readability */
 }
 
 
@@ -27,7 +26,7 @@
 .caption-actions {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Adjust as needed for spacing between buttons */
+  gap: 10px;
 }
 
 .input-container {
