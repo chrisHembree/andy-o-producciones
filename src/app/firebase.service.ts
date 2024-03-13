@@ -194,14 +194,11 @@ export class FirebaseService {
       });
   }
 
-  generateRetratosUniqueId(): number {
-    this.lastRetratosCaptionId++;
-    return this.lastRetratosCaptionId;
-  }
-}
-
-
-
+//   generateRetratosUniqueId(): number {
+//     this.lastRetratosCaptionId++;
+//     return this.lastRetratosCaptionId;
+//   }
+// }
 
 
 

@@ -27,8 +27,8 @@ export class RetratosComponent implements OnInit {
   retratosCaptions: { captionId: string; caption: string }[] = [];
 
   ngOnInit() {
-    this.loadRetratosData();
-    this.loadRetratosCaptionsData();
+    // this.loadRetratosData();
+    // this.loadRetratosCaptionsData();
   }
 
   selectImage() {
@@ -54,61 +54,64 @@ export class RetratosComponent implements OnInit {
     return this.firebaseService.uploadImage('retratos', file);
   }
 
-  private loadRetratosData() {
-    this.firebaseService.getRetratosData().subscribe(
-      (imageIds: string[]) => {
-        const promises = imageIds.map(async (imageId) => {
-          const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
-          const numericId = +imageId;
+  // private loadRetratosData() {
+  //   this.firebaseService.getRetratosData().subscribe(
+  //     (imageIds: string[]) => {
+  //       const promises = imageIds.map(async (imageId) => {
+  //         const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
+  //         const numericId = +imageId;
 
-          // Create a mapping between image ID and caption
-          const caption = await this.firebaseService.getCaptionByImageId(imageId);
+  //         // Create a mapping between image ID and caption
+  //         const caption = await this.firebaseService.getCaptionByImageId(imageId);
 
-          // Explicitly specify the properties to resolve TypeScript error
-          this.retratosImageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
-        });
+  //         // Explicitly specify the properties to resolve TypeScript error
+  //         this.retratosImageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
+  //       });
 
-        // Wait for all promises to resolve before sorting
-        Promise.all(promises).then(() => {
-          // Sort the imageArray based on the IDs
-          this.retratosImageArray.sort((a, b) => a.id - b.id);
-        });
-      },
-      error => console.error('Error loading retratos data:', error)
-    );
-  }
+  //       // Wait for all promises to resolve before sorting
+  //       Promise.all(promises).then(() => {
+  //         // Sort the imageArray based on the IDs
+  //         this.retratosImageArray.sort((a, b) => a.id - b.id);
+  //       });
+  //     },
+  //     error => console.error('Error loading retratos data:', error)
+  //   );
+  // }
 
-  openCaptionDialog(index: number): void {
-    const captionId = this.firebaseService.generateUniqueId();
+  // openCaptionDialog(index: number): void {
+  //   const captionId = this.firebaseService.generateUniqueId();
 
-    const dialogRef = this.dialog.open(CaptionDialogComponent, {
-      width: '400px',
-      data: { caption: this.retratosImageArray[index].caption }
-    });
+  //   const dialogRef = this.dialog.open(CaptionDialogComponent, {
+  //     width: '400px',
+  //     data: { caption: this.retratosImageArray[index].caption }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.retratosImageArray[index].caption = result;
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result !== undefined) {
+  //       this.retratosImageArray[index].caption = result;
 
-        // Use the sequential captionId for the caption
-        const captionsPath = `retratoscaptions/${captionId}`;
-        this.firebaseService.writeCaption(captionsPath, result);
-      }
-    });
-  }
 
-  deleteTheImage(url) {
-    // Implement as needed
-  }
+  //       const captionsPath = `retratoscaptions/${captionId}`;
+  //       this.firebaseService.writeCaption(captionsPath, result);
+  //     }
+  //   });
+  // }
 
-  private loadRetratosCaptionsData() {
-    this.firebaseService.getRetratosCaptions().subscribe(
-      (captionsData: { captionId: string; caption: string }[]) => {
-        this.captions = captionsData;
-      },
-      error => console.error('Error loading retratos captions data:', error)
-    );
-  }
+  // deleteTheImage(url) {
+
+  // }
+
+  // private loadRetratosCaptionsData() {
+  //   this.firebaseService.getRetratosCaptions().subscribe(
+  //     (captionsData: { captionId: string; caption: string }[]) => {
+  //       this.captions = captionsData;
+  //     },
+  //     error => console.error('Error loading retratos captions data:', error)
+  //   );
+  // }
+
+
+
 }
 
 
