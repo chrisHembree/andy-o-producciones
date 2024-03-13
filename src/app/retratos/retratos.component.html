@@ -1,22 +1,26 @@
+
+
 <input type="file" id="img" style="display:none" (change)="onSelect($event)">
 <button (click)="selectImage()">Upload Image</button>
 
-<mat-grid-list cols="2" rowHeight="650px" class="retratos-grid" gutterSize="50">
-  <mat-grid-tile *ngFor="let item of imageArray; let i = index" style="height: 300px;">
+<mat-grid-list cols="2" rowHeight="500px" class="retratos-grid" gutterSize="150">
+  <mat-grid-tile *ngFor="let item of retratosImageArray; let i = index" style="height: 600px;" style="width: 700px">
     <div class="content-container">
       <div class="caption-actions">
-          <button mat-icon-button (click)="openCaptionDialog(i)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button (click)="deleteImage(i)">Delete image</button>
-        </div>
+        <button mat-icon-button (click)="openCaptionDialog(i)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button (click)="deleteRetratosImage(item.url)">Delete image</button>
+      </div>
       <img [src]="item.url" alt="retratos" class="images">
 
       <div class="caption-container">
         <div>
-          <span class="caption" >{{ item.caption }}</span>
+          <span class="caption">{{ item.caption }}</span>
         </div>
-
+        <div *ngIf="retratosCaptions[i]">
+          <span class="caption">{{ retratosCaptions[i].caption }}</span>
+        </div>
       </div>
 
     </div>

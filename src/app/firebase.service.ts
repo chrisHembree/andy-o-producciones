@@ -132,6 +132,76 @@ export class FirebaseService {
     return this.db.object('/contactinfo').update(contactinfo);
   }
 
+//
+//
+//
+//
+//
+// Retratos
 
 
+  getRetratosData(): Observable<string[]> {
+    const listRef = ref(this.storage.storage, 'pictures/retratos');
+
+    return new Observable<string[]>((observer) => {
+      listAll(listRef)
+        .then((res) => {
+          const imageIds = res.items.map((item) => item.name);
+          observer.next(imageIds);
+          observer.complete();
+        })
+        .catch((error) => {
+          console.error('Error fetching retratos data:', error);
+          observer.error(error);
+        });
+    });
+  }
+
+  getRetratosCaptions(): Observable<any[]> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, 'retratoscaptions');
+
+    return new Observable<any[]>((observer) => {
+      onValue(captionsRef, (snapshot) => {
+        const captionsData = snapshot.val();
+        const captionsArray = Object.keys(captionsData || {}).map((key) => ({
+          captionId: key,
+          caption: captionsData[key].caption
+        }));
+        observer.next(captionsArray);
+        observer.complete();
+      });
+    });
+  }
+
+  writeRetratosCaption(captionsPath: string, caption: string): Promise<void> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, captionsPath);
+
+    return set(captionsRef, { caption });
+  }
+
+  uploadRetratosImage(file: File): Promise<number> {
+    const listRef = ref(this.storage.storage, 'pictures/retratos');
+
+    return listAll(listRef)
+      .then((res) => res.items.length)
+      .then((existingImageCount) => {
+        const imageId = existingImageCount + 1;
+        const storageRef = ref(this.storage.storage, `pictures/retratos/${imageId}`);
+
+        return uploadBytes(storageRef, file).then(() => imageId);
+      });
+  }
+
+  generateRetratosUniqueId(): number {
+    this.lastRetratosCaptionId++;
+    return this.lastRetratosCaptionId;
+  }
 }
+
+
+
+
+
+
