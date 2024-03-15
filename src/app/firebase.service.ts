@@ -14,8 +14,7 @@ import { getStorage, deleteObject } from "firebase/storage";
 export class FirebaseService {
   constructor(public storage: AngularFireStorage,
     private db: AngularFireDatabase,) {}
-    private lastImageId: number = 0;
-    private lastCaptionId: number = 0;
+
 
   getCinematografiaData(): Observable<string[]> {
     const listRef = ref(this.storage.storage, 'pictures/cinematografia');
@@ -38,6 +37,7 @@ export class FirebaseService {
     const storageReference = ref(this.storage.storage, `pictures/cinematografia/${imageId}`);
     return getDownloadURL(storageReference);
   }
+
 
 
   getCaptions(): Observable<any[]> {
@@ -139,6 +139,10 @@ export class FirebaseService {
 //
 // Retratos
 
+getRetratosDownloadURL (imageId: string) {
+  const storageReference = ref(this.storage.storage, `pictures/retratos/${imageId}`);
+  return getDownloadURL(storageReference);
+}
 
   getRetratosData(): Observable<string[]> {
     const listRef = ref(this.storage.storage, 'pictures/retratos');
@@ -181,14 +185,14 @@ export class FirebaseService {
     return set(captionsRef, { caption });
   }
 
-  uploadRetratosImage(file: File): Promise<number> {
-    const listRef = ref(this.storage.storage, 'pictures/retratos');
+  uploadRetratosImage(folder: string, file: File): Promise<number> {
+    const listRef = ref(this.storage.storage, `pictures/${folder}`);
 
     return listAll(listRef)
       .then((res) => res.items.length)
       .then((existingImageCount) => {
         const imageId = existingImageCount + 1;
-        const storageRef = ref(this.storage.storage, `pictures/retratos/${imageId}`);
+        const storageRef = ref(this.storage.storage, `pictures/${folder}/${imageId}`);
 
         return uploadBytes(storageRef, file).then(() => imageId);
       });
@@ -201,4 +205,4 @@ export class FirebaseService {
 // }
 
 
-
+}

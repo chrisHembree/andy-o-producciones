@@ -23,11 +23,11 @@ export class RetratosComponent implements OnInit {
     private firebaseService: FirebaseService
   ) {}
 
-  retratosImageArray: { url: string; caption: string; id: number }[] = [];
-  retratosCaptions: { captionId: string; caption: string }[] = [];
+  retratosImageArray: { url: string; retratosCaption: string; id: number }[] = [];
+  retratosCaptions: { captionId: string; retratosCaption: string }[] = [];
 
   ngOnInit() {
-    // this.loadRetratosData();
+    this.loadRetratosData();
     // this.loadRetratosCaptionsData();
   }
 
@@ -42,7 +42,7 @@ export class RetratosComponent implements OnInit {
       this.uploadImage(file)
         .then(imageId => {
           if (this.retratosImageArray.length > 0) {
-            this.retratosImageArray.push({ url: '', caption: '', id: 0 });
+            this.retratosImageArray.push({ url: '', retratosCaption: '', id: 0 });
             this.firebaseService.writeCaption(imageId.toString(), '');
           }
         })
@@ -51,32 +51,38 @@ export class RetratosComponent implements OnInit {
   }
 
   private uploadImage(file: File): Promise<number> {
-    return this.firebaseService.uploadImage('retratos', file);
+    return this.firebaseService.uploadRetratosImage('retratos', file);
   }
 
-  // private loadRetratosData() {
-  //   this.firebaseService.getRetratosData().subscribe(
-  //     (imageIds: string[]) => {
-  //       const promises = imageIds.map(async (imageId) => {
-  //         const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
-  //         const numericId = +imageId;
+  private loadRetratosData() {
+    this.firebaseService.getRetratosData().subscribe(
+      (imageIds: string[]) => {
+        const promises = imageIds.map(async (imageId) => {
+          const downloadUrl = await this.firebaseService.getRetratosDownloadURL(imageId);
+          const numericId = +imageId;
 
-  //         // Create a mapping between image ID and caption
-  //         const caption = await this.firebaseService.getCaptionByImageId(imageId);
+          // Create a mapping between image ID and caption
+          const caption = await this.firebaseService.getCaptionByImageId(imageId);
 
-  //         // Explicitly specify the properties to resolve TypeScript error
-  //         this.retratosImageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
-  //       });
+          const retratosItem: RetratosItem = {
+            url: downloadUrl,
+            retratosCaption: '', // Use retratosCaption instead of caption
+            id: numericId,
+            retratosCaptionText: caption
+          };
 
-  //       // Wait for all promises to resolve before sorting
-  //       Promise.all(promises).then(() => {
-  //         // Sort the imageArray based on the IDs
-  //         this.retratosImageArray.sort((a, b) => a.id - b.id);
-  //       });
-  //     },
-  //     error => console.error('Error loading retratos data:', error)
-  //   );
-  // }
+          this.retratosImageArray.push({ url: downloadUrl, retratosCaption: '', id: numericId, captionText: caption } as RetratosItem);
+        });
+
+        // Wait for all promises to resolve before sorting
+        Promise.all(promises).then(() => {
+          // Sort the imageArray based on the IDs
+          this.retratosImageArray.sort((a, b) => a.id - b.id);
+        });
+      },
+      error => console.error('Error loading retratos data:', error)
+    );
+  }
 
   // openCaptionDialog(index: number): void {
   //   const captionId = this.firebaseService.generateUniqueId();
