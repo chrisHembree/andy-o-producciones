@@ -61,12 +61,12 @@ export class RetratosComponent implements OnInit {
           const downloadUrl = await this.firebaseService.getRetratosDownloadURL(imageId);
           const numericId = +imageId;
 
-          // Create a mapping between image ID and caption
+
           const caption = await this.firebaseService.getCaptionByImageId(imageId);
 
           const retratosItem: RetratosItem = {
             url: downloadUrl,
-            retratosCaption: '', // Use retratosCaption instead of caption
+            retratosCaption: '',
             id: numericId,
             retratosCaptionText: caption
           };
@@ -74,9 +74,9 @@ export class RetratosComponent implements OnInit {
           this.retratosImageArray.push({ url: downloadUrl, retratosCaption: '', id: numericId, captionText: caption } as RetratosItem);
         });
 
-        // Wait for all promises to resolve before sorting
+
         Promise.all(promises).then(() => {
-          // Sort the imageArray based on the IDs
+
           this.retratosImageArray.sort((a, b) => a.id - b.id);
         });
       },
@@ -84,24 +84,24 @@ export class RetratosComponent implements OnInit {
     );
   }
 
-  // openCaptionDialog(index: number): void {
-  //   const captionId = this.firebaseService.generateUniqueId();
+  openCaptionDialog(index: number): void {
+    const captionId = this.firebaseService.generateUniqueId();
 
-  //   const dialogRef = this.dialog.open(CaptionDialogComponent, {
-  //     width: '400px',
-  //     data: { caption: this.retratosImageArray[index].caption }
-  //   });
+    const dialogRef = this.dialog.open(CaptionDialogComponent, {
+      width: '400px',
+      data: { caption: this.retratosImageArray[index].retratosCaption }
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result !== undefined) {
-  //       this.retratosImageArray[index].caption = result;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.retratosImageArray[index].retratosCaption = result;
 
 
-  //       const captionsPath = `retratoscaptions/${captionId}`;
-  //       this.firebaseService.writeCaption(captionsPath, result);
-  //     }
-  //   });
-  // }
+        const captionsPath = `retratosCaptions/${captionId}`;
+        this.firebaseService.writeCaption(captionsPath, result);
+      }
+    });
+  }
 
   // deleteTheImage(url) {
 
