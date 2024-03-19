@@ -84,28 +84,60 @@ export class RetratosComponent implements OnInit {
     );
   }
 
-  openCaptionDialog(index: number): void {
-    const captionId = this.firebaseService.generateUniqueId();
+  openRetratosCaptionDialog(index: number): void {
+    this.firebaseService.generateRetratosCaptionId().then(captionId => {
+      const dialogRef = this.dialog.open(CaptionDialogComponent, {
+        width: '400px',
+        data: { caption: this.retratosImageArray[index].retratosCaption }
+      });
 
-    const dialogRef = this.dialog.open(CaptionDialogComponent, {
-      width: '400px',
-      data: { caption: this.retratosImageArray[index].retratosCaption }
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== undefined) {
+          this.retratosImageArray[index].retratosCaption = result;
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.retratosImageArray[index].retratosCaption = result;
+          // Use the generated captionId for the retratos caption
+          const retratosCaptionsPath = `retratoscaptions/${captionId}`;
+          this.firebaseService.writeRetratosCaption(retratosCaptionsPath, result).then(() => {
+            console.log('Retratos caption updated successfully.');
 
+          }).catch(error => {
+            console.error('Error updating retratos caption:', error);
+          });
+        }
+      });
+    }).catch(error => {
+      console.error('Error generating unique ID for retratos caption:', error);
 
-        const captionsPath = `retratosCaptions/${captionId}`;
-        this.firebaseService.writeCaption(captionsPath, result);
-      }
     });
   }
 
-  // deleteTheImage(url) {
+  deleteTheImage(url) {
+    const index = this.retratosImageArray.findIndex(item => item.url === url);
 
-  // }
+    if (index !== -1) {
+      const captionId = this.retratosCaptions[index]?.captionId;
+
+      this.firebaseService.deleteImage(url).then(() => {
+        if (captionId) {
+          this.firebaseService.deleteCaption(captionId).subscribe(
+            () => {
+
+              this.retratosImageArray.splice(index, 1);
+              this.retratosCaptions.splice(index, 1);
+            },
+            error => console.error('Error deleting caption:', error)
+          );
+        }
+      }).catch(error => console.error('Error deleting image:', error));
+    }
+  }
+
+
+
+
+
+
+
 
   // private loadRetratosCaptionsData() {
   //   this.firebaseService.getRetratosCaptions().subscribe(

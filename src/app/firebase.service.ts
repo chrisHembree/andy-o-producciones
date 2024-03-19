@@ -198,11 +198,37 @@ getRetratosDownloadURL (imageId: string) {
       });
   }
 
-//   generateRetratosUniqueId(): number {
-//     this.lastRetratosCaptionId++;
-//     return this.lastRetratosCaptionId;
-//   }
-// }
+  generateRetratosCaptionId(): Promise<number> {
+    const db = getDatabase();
+    const retratosCaptionsRef = dbRef(db, 'retratoscaptions');
+
+    return get(retratosCaptionsRef)
+      .then(snapshot => {
+        const existingRetratosCaptionCount = snapshot.val() ? Object.keys(snapshot.val()).length : 0;
+        const retratosCaptionId = existingRetratosCaptionCount + 1;
+        return retratosCaptionId;
+      });
+  }
+
+  deleteRetratosImage(path: string): Promise<void> {
+    const storageRef = this.storage.refFromURL(path);
+    return storageRef.delete().toPromise();
+  }
+
+  deleteRetratosCaption(captionId: string): Observable<void> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, `retratoscaptions/${captionId}`);
+    return from(remove(captionsRef));
+  }
+
+
+
+
+
+
+
+
+
 
 
 }

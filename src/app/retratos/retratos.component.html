@@ -7,7 +7,7 @@
   <mat-grid-tile *ngFor="let item of retratosImageArray; let i = index" style="height: 600px;" style="width: 700px">
     <div class="content-container">
       <div class="caption-actions">
-        <button mat-icon-button (click)="openCaptionDialog(i)">
+        <button mat-icon-button (click)="openRetratosCaptionDialog(i)">
           <mat-icon>edit</mat-icon>
         </button>
         <button (click)="deleteRetratosImage(item.url)">Delete image</button>
