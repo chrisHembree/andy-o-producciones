@@ -28,7 +28,7 @@ export class RetratosComponent implements OnInit {
 
   ngOnInit() {
     this.loadRetratosData();
-    // this.loadRetratosCaptionsData();
+    this.loadRetratosCaptionsData();
   }
 
   selectImage() {
@@ -43,7 +43,7 @@ export class RetratosComponent implements OnInit {
         .then(imageId => {
           if (this.retratosImageArray.length > 0) {
             this.retratosImageArray.push({ url: '', retratosCaption: '', id: 0 });
-            this.firebaseService.writeCaption(imageId.toString(), '');
+            this.firebaseService.writeRetratosCaption(imageId.toString(), '');
           }
         })
         .catch(error => console.error('Error uploading image', error));
@@ -60,24 +60,19 @@ export class RetratosComponent implements OnInit {
         const promises = imageIds.map(async (imageId) => {
           const downloadUrl = await this.firebaseService.getRetratosDownloadURL(imageId);
           const numericId = +imageId;
+          const caption = await this.firebaseService.getRetratosCaptionByImageId(imageId);
 
-
-          const caption = await this.firebaseService.getCaptionByImageId(imageId);
-
-          const retratosItem: RetratosItem = {
-            url: downloadUrl,
-            retratosCaption: '',
-            id: numericId,
-            retratosCaptionText: caption
-          };
-
-          this.retratosImageArray.push({ url: downloadUrl, retratosCaption: '', id: numericId, captionText: caption } as RetratosItem);
+          // Push both image and caption data into the respective arrays
+          this.retratosImageArray.push({ url: downloadUrl, retratosCaption: '', id: numericId });
+          // Instead of pushing directly, map the retrieved caption to match the structure of retratosCaptions
+          const retratosCaption = { captionId: '', retratosCaption: caption };
+          this.retratosCaptions.push(retratosCaption);
         });
 
-
         Promise.all(promises).then(() => {
-
           this.retratosImageArray.sort((a, b) => a.id - b.id);
+          this.loadRetratosCaptionsData();
+
         });
       },
       error => console.error('Error loading retratos data:', error)
@@ -133,20 +128,17 @@ export class RetratosComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-  // private loadRetratosCaptionsData() {
-  //   this.firebaseService.getRetratosCaptions().subscribe(
-  //     (captionsData: { captionId: string; caption: string }[]) => {
-  //       this.captions = captionsData;
-  //     },
-  //     error => console.error('Error loading retratos captions data:', error)
-  //   );
-  // }
+  private loadRetratosCaptionsData() {
+    this.firebaseService.getRetratosCaptions().subscribe(
+      (captionsData: { captionId: string; caption: string }[]) => {
+        this.retratosCaptions = captionsData.map(caption => ({
+          captionId: caption.captionId,
+          retratosCaption: caption.caption
+        }));
+      },
+      error => console.error('Error loading retratos captions data:', error)
+    );
+  }
 
 
 

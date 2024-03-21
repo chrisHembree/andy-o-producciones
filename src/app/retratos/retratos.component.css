@@ -6,7 +6,8 @@
 
 .images {
   width: 100%;
-  height: 100%;
+  height: 50%;
+  /* fix this later ^^^ */
   object-fit: cover;
 }
 
@@ -19,6 +20,12 @@
   text-align: center;
 }
 
+.caption {
+
+font-family:'Agency FB', sans-serif;
+font-size: 30px;
+
+}
 
 
 .caption-actions {
@@ -48,12 +55,6 @@ label {
   height: 100%;
 }
 
-.caption {
-
-font-family:'Agency FB', sans-serif;
-font-size: 30px;
-
-}
 
 
 

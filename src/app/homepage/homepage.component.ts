@@ -74,30 +74,30 @@ export class HomepageComponent implements OnInit {
     return this.firebaseService.uploadImage('cinematografia', file);
   }
 
-  private loadCinematografiaData(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.firebaseService.getCinematografiaData().subscribe(
-        (imageIds: string[]) => {
-          const promises = imageIds.map(async (imageId) => {
-            const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
-            const numericId = +imageId;
+  // private loadCinematografiaData(): Promise<void> {
+  //   return new Promise<void>((resolve, reject) => {
+  //     this.firebaseService.getCinematografiaData().subscribe(
+  //       (imageIds: string[]) => {
+  //         const promises = imageIds.map(async (imageId) => {
+  //           const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
+  //           const numericId = +imageId;
 
-            const caption = await this.firebaseService.getCaptionByImageId(imageId);
-            this.imageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
-          });
+  //           const caption = await this.firebaseService.getCaptionByImageId(imageId);
+  //           this.imageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
+  //         });
 
-          Promise.all(promises).then(() => {
-            this.imageArray.sort((a, b) => a.id - b.id);
-            resolve(); // Resolve the outer promise when all image data is loaded
-          });
-        },
-        error => {
-          console.error('Error loading cinematografia data:', error);
-          reject(error); // Reject the outer promise if there is an error
-        }
-      );
-    });
-  }
+  //         Promise.all(promises).then(() => {
+  //           this.imageArray.sort((a, b) => a.id - b.id);
+  //           resolve(); // Resolve the outer promise when all image data is loaded
+  //         });
+  //       },
+  //       error => {
+  //         console.error('Error loading cinematografia data:', error);
+  //         reject(error); // Reject the outer promise if there is an error
+  //       }
+  //     );
+  //   });
+  // }
   openCaptionDialog(index: number): void {
     this.firebaseService.generateUniqueId().then(captionId => {
       const dialogRef = this.dialog.open(CaptionDialogComponent, {

@@ -165,8 +165,8 @@ getRetratosDownloadURL (imageId: string) {
     const db = getDatabase();
     const captionsRef = dbRef(db, 'retratoscaptions');
 
-    return new Observable<any[]>((observer) => {
-      onValue(captionsRef, (snapshot) => {
+    return new Observable<any[]>(observer => {
+      onValue(captionsRef, snapshot => {
         const captionsData = snapshot.val();
         const captionsArray = Object.keys(captionsData || {}).map((key) => ({
           captionId: key,
@@ -178,12 +178,45 @@ getRetratosDownloadURL (imageId: string) {
     });
   }
 
+
+getRetratosCaptionByImageId(imageId: string): Promise<string> {
+    const db = getDatabase();
+    const captionsRef = dbRef(db, `retratoscaptions/${imageId}`);
+
+    return new Promise<string>((resolve, reject) => {
+      onValue(captionsRef, snapshot => {
+        const captionData = snapshot.val();
+        if (captionData) {
+          resolve(captionData.caption);
+        } else {
+          resolve('');
+        }
+      }, reject);
+    });
+  }
+
   writeRetratosCaption(captionsPath: string, caption: string): Promise<void> {
     const db = getDatabase();
     const captionsRef = dbRef(db, captionsPath);
 
     return set(captionsRef, { caption });
   }
+
+
+
+generateRetratosCaptionId(): Promise<number> {
+    const db = getDatabase();
+    const retratosCaptionsRef = dbRef(db, 'retratoscaptions');
+
+    return get(retratosCaptionsRef)
+      .then(snapshot => {
+        const existingRetratosCaptionCount = snapshot.val() ? Object.keys(snapshot.val()).length : 0;
+        const retratosCaptionId = existingRetratosCaptionCount + 1;
+        return retratosCaptionId;
+      });
+  }
+
+
 
   uploadRetratosImage(folder: string, file: File): Promise<number> {
     const listRef = ref(this.storage.storage, `pictures/${folder}`);
@@ -198,17 +231,7 @@ getRetratosDownloadURL (imageId: string) {
       });
   }
 
-  generateRetratosCaptionId(): Promise<number> {
-    const db = getDatabase();
-    const retratosCaptionsRef = dbRef(db, 'retratoscaptions');
 
-    return get(retratosCaptionsRef)
-      .then(snapshot => {
-        const existingRetratosCaptionCount = snapshot.val() ? Object.keys(snapshot.val()).length : 0;
-        const retratosCaptionId = existingRetratosCaptionCount + 1;
-        return retratosCaptionId;
-      });
-  }
 
   deleteRetratosImage(path: string): Promise<void> {
     const storageRef = this.storage.refFromURL(path);
@@ -220,13 +243,6 @@ getRetratosDownloadURL (imageId: string) {
     const captionsRef = dbRef(db, `retratoscaptions/${captionId}`);
     return from(remove(captionsRef));
   }
-
-
-
-
-
-
-
 
 
 
