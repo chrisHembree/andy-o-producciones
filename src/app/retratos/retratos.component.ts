@@ -62,9 +62,9 @@ export class RetratosComponent implements OnInit {
           const numericId = +imageId;
           const caption = await this.firebaseService.getRetratosCaptionByImageId(imageId);
           this.retratosImageArray.push({ url: downloadUrl, retratosCaption: '', id: numericId, retratosCaptionText: caption } as RetratosItem);
-          // Push both image and caption data into the respective arrays
 
-          // Instead of pushing directly, map the retrieved caption to match the structure of retratosCaptions
+
+
           const retratosCaption = { captionId: '', retratosCaption: caption };
           this.retratosCaptions.push(retratosCaption);
         });
@@ -90,7 +90,7 @@ export class RetratosComponent implements OnInit {
         if (result !== undefined) {
           this.retratosImageArray[index].retratosCaption = result;
 
-          // Use the generated captionId for the retratos caption
+
           const retratosCaptionsPath = `retratoscaptions/${captionId}`;
           this.firebaseService.writeRetratosCaption(retratosCaptionsPath, result).then(() => {
             console.log('Retratos caption updated successfully.');

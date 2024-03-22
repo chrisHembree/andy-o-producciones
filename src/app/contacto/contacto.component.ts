@@ -4,7 +4,7 @@ import { FirebaseService } from '../firebase.service';
 @Component({
   selector: 'app-contacto',
   templateUrl: './contacto.component.html',
-  styleUrls: ['./contacto.component.css'] // Correct property name is styleUrls
+  styleUrls: ['./contacto.component.css']
 })
 export class ContactoComponent implements OnInit {
   editingMode = false;
@@ -13,7 +13,7 @@ export class ContactoComponent implements OnInit {
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit(): void {
-    // Fetch contact data from Firebase on component initialization
+
     this.firebaseService.getcontactinfo().subscribe((data: any) => {
       this.contactData = data;
     });
@@ -24,7 +24,7 @@ export class ContactoComponent implements OnInit {
   }
 
   saveChanges(): void {
-    // // Update contact data in Firebase when Save button is clicked
+
     this.firebaseService.updatecontactinfo(this.contactData);
     this.editingMode = false;
   }
