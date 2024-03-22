@@ -1,5 +1,4 @@
 
-
 <input type="file" id="img" style="display:none" (change)="onSelect($event)">
 <button (click)="selectImage()">Upload Image</button>
 
@@ -10,7 +9,7 @@
         <button mat-icon-button (click)="openRetratosCaptionDialog(i)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button (click)="deleteRetratosImage(item.url)">Delete image</button>
+        <button (click)="deleteTheImage(item.url)">Delete image</button>
       </div>
       <img [src]="item.url" alt="retratos" class="images">
 

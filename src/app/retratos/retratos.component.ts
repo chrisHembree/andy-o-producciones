@@ -112,9 +112,9 @@ export class RetratosComponent implements OnInit {
     if (index !== -1) {
       const captionId = this.retratosCaptions[index]?.captionId;
 
-      this.firebaseService.deleteImage(url).then(() => {
+      this.firebaseService.deleteRetratosImage(url).then(() => {
         if (captionId) {
-          this.firebaseService.deleteCaption(captionId).subscribe(
+          this.firebaseService.deleteRetratosCaption(captionId).subscribe(
             () => {
 
               this.retratosImageArray.splice(index, 1);
