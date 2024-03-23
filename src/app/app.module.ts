@@ -24,7 +24,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment.development';
-
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 
 @NgModule({
@@ -57,7 +57,7 @@ import { environment } from '../environments/environment.development';
     provideStorage(() => getStorage()),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-
+    AngularFireAuthModule,
 
   ],
   providers: [],

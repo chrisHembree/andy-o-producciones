@@ -19,12 +19,14 @@ export class AppComponent {
     });
   }
 
-  isUserAuthenticated(): boolean {
-    // Implement logic to check if the user is authenticated
-    // Return true if authenticated, false otherwise
-    // You might use an authentication service for this check
-    return true; // Replace with your actual authentication logic
+  isAdminLoggedIn: boolean = false;
+
+  onAdminLoggedIn(loggedIn: boolean): void {
+    this.isAdminLoggedIn = loggedIn;
   }
 
+  onAdminLoggedOut(): void {
+    this.isAdminLoggedIn = false;
+  }
 
 }

@@ -25,6 +25,7 @@ export class HomepageComponent implements OnInit {
 
   imageArray: { url: string, caption: string, id: number }[] = [];
   captions: { captionId: string, caption: string }[] = [];
+  isLoggedIn: boolean = false;
 
   ngOnInit() {
     this.loadData();
@@ -42,7 +43,7 @@ export class HomepageComponent implements OnInit {
 
         Promise.all(promises).then(() => {
           this.imageArray.sort((a, b) => a.id - b.id);
-          this.loadCaptionsData(); // Load captions after images
+          this.loadCaptionsData();
         });
       },
       error => console.error('Error loading cinematografia data:', error)
@@ -74,30 +75,7 @@ export class HomepageComponent implements OnInit {
     return this.firebaseService.uploadImage('cinematografia', file);
   }
 
-  // private loadCinematografiaData(): Promise<void> {
-  //   return new Promise<void>((resolve, reject) => {
-  //     this.firebaseService.getCinematografiaData().subscribe(
-  //       (imageIds: string[]) => {
-  //         const promises = imageIds.map(async (imageId) => {
-  //           const downloadUrl = await this.firebaseService.getImageDownloadURL(imageId);
-  //           const numericId = +imageId;
 
-  //           const caption = await this.firebaseService.getCaptionByImageId(imageId);
-  //           this.imageArray.push({ url: downloadUrl, caption: '', id: numericId, captionText: caption } as ImageItem);
-  //         });
-
-  //         Promise.all(promises).then(() => {
-  //           this.imageArray.sort((a, b) => a.id - b.id);
-  //           resolve(); // Resolve the outer promise when all image data is loaded
-  //         });
-  //       },
-  //       error => {
-  //         console.error('Error loading cinematografia data:', error);
-  //         reject(error); // Reject the outer promise if there is an error
-  //       }
-  //     );
-  //   });
-  // }
   openCaptionDialog(index: number): void {
     this.firebaseService.generateUniqueId().then(captionId => {
       const dialogRef = this.dialog.open(CaptionDialogComponent, {
@@ -146,6 +124,13 @@ export class HomepageComponent implements OnInit {
       error => console.error('Error loading captions data:', error)
     );
   }
+
+  // onLoggedIn(isLoggedIn: boolean) {
+  //   this.isLoggedIn = isLoggedIn;
+  // }
+
+
+
 
 
   }

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { AuthService } from '../firebaseauth.service';
 
 @Component({
   selector: 'app-admin',
@@ -9,12 +10,18 @@ export class AdminComponent {
 
   email: string = '';
   password: string = '';
+  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
-  onSubmit(): void {
-
-
+  async onSubmit(): Promise<void> {
+    try {
+      await this.authService.signIn(this.email, this.password);
+      console.log('Login successful');
+      this.loggedIn.emit(true);
+    } catch (error) {
+      console.error('Error logging in', error);
+    }
   }
 }
 
