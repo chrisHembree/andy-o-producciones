@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MatDialog,  } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { AuthService } from './firebaseauth.service';
 
 
 @Component({
@@ -11,22 +13,21 @@ import { MatDialog,  } from '@angular/material/dialog';
 export class AppComponent {
   title = 'andy-o-producciones';
 
-  constructor(private dialog: MatDialog) {}
+  isAdminLoggedIn$: Observable<boolean>;
 
-  openLoginDialog(): void {
-    this.dialog.open(LoginDialogComponent, {
-      width: '400px',
-    });
+  constructor(private authService: AuthService) {
+    this.isAdminLoggedIn$ = this.authService.isLoggedIn$;
   }
 
-  isAdminLoggedIn: boolean = false;
-
-  onAdminLoggedIn(loggedIn: boolean): void {
-    this.isAdminLoggedIn = loggedIn;
+  handleLoginStatus(status: boolean): void {
+    // Handle login status here if needed
   }
 
   onAdminLoggedOut(): void {
-    this.isAdminLoggedIn = false;
+    // Handle logout logic if needed
   }
+
+
+
 
 }

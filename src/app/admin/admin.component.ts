@@ -10,19 +10,28 @@ export class AdminComponent {
 
   email: string = '';
   password: string = '';
-  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private authService: AuthService) {}
 
-  async onSubmit(): Promise<void> {
-    try {
-      await this.authService.signIn(this.email, this.password);
-      console.log('Login successful');
-      this.loggedIn.emit(true);
-    } catch (error) {
-      console.error('Error logging in', error);
-    }
+async onSubmit(): Promise<void> {
+  try {
+    await this.authService.signIn(this.email, this.password);
+    console.log('Login successful');
+  } catch (error) {
+    console.error('Error logging in', error);
   }
+}
+
+async onLogout(): Promise<void> {
+  try {
+    await this.authService.signOut();
+    console.log('Logout successful');
+  } catch (error) {
+    console.error('Error logging out', error);
+  }
+}
+
+
 }
 
 

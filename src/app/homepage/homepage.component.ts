@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
 import { FirebaseService } from '../firebase.service';
 import { getStorage, deleteObject, ref, StorageReference } from "firebase/storage";
 import {  ref as dbRef,} from 'firebase/database';
+import { AuthService } from '../firebaseauth.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 interface ImageItem {
   url: string;
@@ -18,14 +20,30 @@ interface ImageItem {
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+
+  isAdminLoggedIn: boolean = false;
+
+
+
+
   constructor(
     private dialog: MatDialog,
-    private firebaseService: FirebaseService
-  ) {}
+    private firebaseService: FirebaseService,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.authService.isLoggedIn$.subscribe(
+      isLoggedIn => {
+        console.log('HomepageComponent isLoggedIn:', isLoggedIn);
+        this.isAdminLoggedIn = isLoggedIn;
+      }
+    );
+
+  }
 
   imageArray: { url: string, caption: string, id: number }[] = [];
   captions: { captionId: string, caption: string }[] = [];
-  isLoggedIn: boolean = false;
+  @Input() isLoggedIn: boolean;
 
   ngOnInit() {
     this.loadData();
@@ -124,10 +142,6 @@ export class HomepageComponent implements OnInit {
       error => console.error('Error loading captions data:', error)
     );
   }
-
-  // onLoggedIn(isLoggedIn: boolean) {
-  //   this.isLoggedIn = isLoggedIn;
-  // }
 
 
 
