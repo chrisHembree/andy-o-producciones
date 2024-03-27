@@ -41,11 +41,16 @@ export class AuthService {
 
   async signOut(): Promise<void> {
     try {
-      await this.afAuth.signOut();
+
+
+     await this.afAuth.signOut();
+
+      this.isLoggedInSubject.next(false);
+      console.log('Logout successful');
     } catch (error) {
       console.error('Error signing out', error);
       throw error;
     }
-  }
 }
 
+}
