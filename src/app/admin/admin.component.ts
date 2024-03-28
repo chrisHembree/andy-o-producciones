@@ -9,27 +9,37 @@ import { AuthService } from '../firebaseauth.service';
 export class AdminComponent {
 
   email: string = '';
-  password: string = '';
+password: string = '';
+localEmail: string = '';  // Separate variable for email
+localPassword: string = '';  // Separate variable for password
 
   constructor(private authService: AuthService) {}
 
-async onSubmit(): Promise<void> {
-  try {
-    await this.authService.signIn(this.email, this.password);
-    console.log('Login successful');
-  } catch (error) {
-    console.error('Error logging in', error);
+  async onSubmit(): Promise<void> {
+    try {
+      await this.authService.signIn(this.email, this.password);
+      console.log('Login successful');
+      this.clearCredentials();  // Clear email and password after successful login
+    } catch (error) {
+      console.error('Error logging in', error);
+    }
   }
-}
 
-async onLogout(): Promise<void> {
-  try {
-    await this.authService.signOut();
-    console.log('Logout successful');
-  } catch (error) {
-    console.error('Error logging out', error);
+  async onLogout(): Promise<void> {
+    try {
+      await this.authService.signOut();
+      console.log('Logout successful');
+    } catch (error) {
+      console.error('Error logging out', error);
+    }
   }
-}
+
+  clearCredentials(): void {
+    this.email = '';
+    this.password = '';
+  }
+
+
 
 
 }

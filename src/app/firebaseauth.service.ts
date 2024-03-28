@@ -12,8 +12,18 @@ export class AuthService {
   adminPassword: string = 'chell1994';
   adminUserId: string = 'xxBNT1S1dvhg0KV183VaMWneXnN2';
 
+  private email: string = '';  // Declare email property
+  private password: string = '';  // Declare password property
+
+
   private isLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
+
+  clearCredentials(): void {
+    this.email = '';
+    this.password = '';
+  }
+
 
   constructor(private afAuth: AngularFireAuth) {
     this.afAuth.authState.pipe(
