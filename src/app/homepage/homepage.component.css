@@ -2,6 +2,8 @@
   max-width: 1650px;
   margin: 0 auto;
   padding: 20px;
+  display: flex;
+  flex-wrap: wrap;  /* Enable wrapping */
 }
 
 .images {
@@ -11,17 +13,13 @@
 }
 
 .caption-container {
-
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   height: 100px;
-
 }
-
-
 
 .caption-actions {
   display: flex;
@@ -33,7 +31,6 @@
   text-align: center;
 }
 
-
 .content-container {
   display: flex;
   flex-direction: column;
@@ -43,14 +40,15 @@
   padding: 30px;
 }
 
-
-.caption{
-
-  font-family:'Agency FB', sans-serif;
+.caption {
+  font-family: 'Agency FB', sans-serif;
   font-size: 30px;
-
 }
 
-
-
-
+/* Media query for smaller screens */
+@media (max-width: 768px) {  /* Adjust this breakpoint as needed */
+  .mat-grid-tile {
+    flex: 0 0 100%;  /* Each grid tile takes up 100% width */
+    margin-bottom: 20px;  /* Optional: Add space between stacked items */
+  }
+}

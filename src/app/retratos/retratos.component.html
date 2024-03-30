@@ -1,11 +1,11 @@
-
+<div  *ngIf="isAdminLoggedIn" >
 <input type="file" id="img" style="display:none" (change)="onSelect($event)">
 <button (click)="selectImage()">Upload Image</button>
-
-<mat-grid-list cols="2" rowHeight="500px" class="retratos-grid" gutterSize="150">
+</div>
+<mat-grid-list cols="2" [cols]="gridCols" rowHeight="500px" class="retratos-grid" gutterSize="150">
   <mat-grid-tile *ngFor="let item of retratosImageArray; let i = index" style="height: 600px;" style="width: 700px">
     <div class="content-container">
-      <div class="caption-actions">
+      <div class="caption-actions" *ngIf="isAdminLoggedIn">
         <button mat-icon-button (click)="openRetratosCaptionDialog(i)">
           <mat-icon>edit</mat-icon>
         </button>

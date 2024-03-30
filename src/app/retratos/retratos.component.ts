@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CaptionDialogComponent } from '../caption-dialog/caption-dialog.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FirebaseService } from '../firebase.service';
+import { AuthService } from '../firebaseauth.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 interface RetratosItem {
   url: string;
@@ -10,6 +12,7 @@ interface RetratosItem {
   id: number;
   retratosCaptionText?: string;
 }
+
 
 
 @Component({
@@ -20,9 +23,33 @@ interface RetratosItem {
 export class RetratosComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
-    private firebaseService: FirebaseService
-  ) {}
+    private firebaseService: FirebaseService,
+    private authService: AuthService,
+    private breakpointObserver: BreakpointObserver,
+  ) {
+    this.authService.isLoggedIn$.subscribe(
+      isLoggedIn => {
+        console.log('admin isLoggedIn:', isLoggedIn);
+        this.isAdminLoggedIn = isLoggedIn;
+      }
+    );
+    this.breakpointObserver.observe([
+      Breakpoints.HandsetPortrait,
+      Breakpoints.TabletPortrait,
+      Breakpoints.WebPortrait
+    ]).subscribe(result => {
+      if (result.matches) {
+        this.gridCols = 1;  // Set to 1 column for smaller screens
+      } else {
+        this.gridCols = 2;  // Set to 2 columns for larger screens
+      }
+    });
 
+
+  }
+
+  gridCols: number = 2;
+  isAdminLoggedIn: boolean = false;
   retratosImageArray: { url: string; retratosCaption: string; id: number }[] = [];
   retratosCaptions: { captionId: string; retratosCaption: string }[] = [];
 
@@ -139,7 +166,6 @@ export class RetratosComponent implements OnInit {
       error => console.error('Error loading retratos captions data:', error)
     );
   }
-
 
 
 }

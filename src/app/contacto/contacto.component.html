@@ -1,7 +1,7 @@
 <div class="andydiv">
   <img class="andy" src="/assets/andy.jpg" alt="Andy">
-  <div class="contactinfo" *ngIf="!editingMode">
-    <button class="editcontact" (click)="toggleEditing()">Edit</button> <br>
+  <div class="contactinfo" *ngIf="!editingMode" >
+    <button class="editcontact" (click)="toggleEditing()" *ngIf="isAdminLoggedIn" >Edit</button> <br>
     <div>
       <img class="walogo" src="/assets/walogo.jpg" style="padding-right: 8px;" />
       <span style="font-size: 20px;">{{ contactData.whatsapp }}</span> <br />

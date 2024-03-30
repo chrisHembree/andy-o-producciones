@@ -6,6 +6,8 @@ import { getStorage, deleteObject, ref, StorageReference } from "firebase/storag
 import {  ref as dbRef,} from 'firebase/database';
 import { AuthService } from '../firebaseauth.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
 
 interface ImageItem {
   url: string;
@@ -30,17 +32,30 @@ export class HomepageComponent implements OnInit {
     private dialog: MatDialog,
     private firebaseService: FirebaseService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private breakpointObserver: BreakpointObserver
   ) {
     this.authService.isLoggedIn$.subscribe(
       isLoggedIn => {
-        console.log('HomepageComponent isLoggedIn:', isLoggedIn);
+        console.log('admin isLoggedIn:', isLoggedIn);
         this.isAdminLoggedIn = isLoggedIn;
       }
     );
+    this.breakpointObserver.observe([
+      Breakpoints.HandsetPortrait,
+      Breakpoints.TabletPortrait,
+      Breakpoints.WebPortrait
+    ]).subscribe(result => {
+      if (result.matches) {
+        this.gridCols = 1;  // Set to 1 column for smaller screens
+      } else {
+        this.gridCols = 2;  // Set to 2 columns for larger screens
+      }
+    });
 
   }
 
+  gridCols: number = 2;
   imageArray: { url: string, caption: string, id: number }[] = [];
   captions: { captionId: string, caption: string }[] = [];
   @Input() isLoggedIn: boolean;

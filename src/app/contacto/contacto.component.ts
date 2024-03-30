@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../firebase.service';
+import { AuthService } from '../firebaseauth.service';
 
 @Component({
   selector: 'app-contacto',
@@ -10,7 +11,16 @@ export class ContactoComponent implements OnInit {
   editingMode = false;
   contactData: any = {};
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService,
+  private authService: AuthService,) {
+
+  this.authService.isLoggedIn$.subscribe(
+  isLoggedIn => {
+  console.log('admin isLoggedIn:', isLoggedIn);
+  this.isAdminLoggedIn = isLoggedIn;
+  }
+   );
+}
 
   ngOnInit(): void {
 
@@ -28,4 +38,6 @@ export class ContactoComponent implements OnInit {
     this.firebaseService.updatecontactinfo(this.contactData);
     this.editingMode = false;
   }
+
+  isAdminLoggedIn: boolean = false;
 }
