@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/andy-o-producciones",
+    "public": "dist/andy-o-producciones/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
